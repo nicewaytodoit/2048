@@ -1,6 +1,8 @@
 {
   "name": "2048",
-  "version": "0.1.0",
+  "version": "0.0.1",
+  "author": "Aleksandar Ristevski",
+  "description": "Just for fun porting game 2048 to React and evolving it just a bit",
   "private": true,
   "installConfig": {
     "pnp": true

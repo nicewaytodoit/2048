@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Row from './Row';
 import Cell from './Cell';
 
@@ -6,21 +7,12 @@ class Grid extends Component {
     constructor(props) {
         super(props);
         const { Size } = props;
-        const init = (size) => {
-            let cells = [];
-            for (let x = 0; x < size; x++) {
-                let row = cells[x] = [];
-                for (let y = 0; y < size; y++) {
-                    row.push(null);
-                }
-            }
-            return cells;
-        };
+        const init = (size) => Array(size).fill(null).map(() => Array(size).fill(null));
         this.state = {
-            cells: init(Size),
+            cells: init(Size)
         };
     }
-
+   
     eachCell = (callback) => {
         const { Size } = this.props;
         const { cells } = this.state;
@@ -77,18 +69,22 @@ class Grid extends Component {
     removeTile = (tile) => this.updateCellsState(tile, null);
 
     render() {
-        const { Size } = props;
+        const { Size } = this.props;
         const grid = Array(Size).fill(1);
         return (
-            <div class="grid-container">
-                {grid.map(() => (
-                    <Row>
-                        {grid.map(() => <Cell />)}
+            <div className="grid-container">
+                {grid.map((v, i) => (
+                    <Row key={`row-${v+i}`}>
+                        {grid.map((vv, ii) => <Cell key={`cell-${vv+ii}`} />)}
                     </Row>
                 ))}
             </div>
         );
     }
+}
+
+Grid.propTypes = {
+    Size: PropTypes.number.isRequired,
 };
 
 export default Grid;

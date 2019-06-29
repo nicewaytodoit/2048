@@ -1,5 +1,5 @@
 import React from 'react';
-import Body from './Body';
+import Body from './Body/Body';
 import Header from './Header';
 import Help from './Help';
 import Credits from './Credits';
@@ -7,10 +7,9 @@ import Hint from './Hint';
 import Divider from './Divider';
 import './main.scss';
 
-const Layout = (props) => {
-
+const Layout = () => {
     return (
-        <div class="container">
+        <div className="container">
             <Header />
             <Hint />
 

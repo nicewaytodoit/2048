@@ -1,8 +1,8 @@
 import React from 'react';
 
-const Cell = (props) => {
+const Cell = () => {
     return (
-        <div class="grid-cell"></div>
+        <div className="grid-cell" />
     );
 };
 

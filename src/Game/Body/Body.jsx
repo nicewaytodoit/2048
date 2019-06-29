@@ -1,20 +1,15 @@
 import React from 'react';
+import Grid from './Grid';
+import Message from './Message';
 
-const Body = (props) => {
+const Body = () => {
     return (
-        <div class="game-container">
-            <div class="game-message">
-                <p></p>
-                <div class="lower">
-                    <a class="retry-button">Try again</a>
-                </div>
-            </div>
+        <div className="game-container">
+            <Message />
 
             <Grid Size={4} />
 
-            <div class="tile-container">
-
-            </div>
+            <div className="tile-container" />
         </div>
     );
 };

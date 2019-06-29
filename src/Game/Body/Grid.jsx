@@ -9,7 +9,7 @@ class Grid extends Component {
         const { Size } = props;
         const init = (size) => Array(size).fill(null).map(() => Array(size).fill(null));
         this.state = {
-            cells: init(Size)
+            cells: init(Size),
         };
     }
    

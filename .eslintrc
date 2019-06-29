@@ -33,6 +33,7 @@
         "react/jsx-one-expression-per-line": 0,
         "react/jsx-indent": ["warn", 4],
         "react/jsx-indent-props": ["warn", 4],
+        "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx",".ts", ".tsx"] }],
         "jsx-a11y/anchor-is-valid": 0
     },
     "settings": {
@@ -42,6 +43,5 @@
                 "extensions": [".js", ".jsx", ".ts", ".tsx"]
             }
         }
-    },
-    "emitWarning": true
+    }
 }

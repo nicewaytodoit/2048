@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Row from './Row';
 import Cell from './Cell';
+import KeyboardInputManager from '../hoc/KeyboardInputManager';
 
 class Grid extends Component {
     constructor(props) {
@@ -87,4 +88,4 @@ Grid.propTypes = {
     Size: PropTypes.number.isRequired,
 };
 
-export default Grid;
+export default KeyboardInputManager(Grid);

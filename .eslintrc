@@ -26,6 +26,7 @@
         "jest": true
     },
     "rules": {
+        "no-console": 0,
         "comma-dangle": [2, "always-multiline"],
         "no-unused-vars": "error",
         "react/require-default-props": 0,

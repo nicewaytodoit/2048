@@ -1,83 +1,111 @@
-import React, { Component } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
+import Hammer from 'hammerjs';
+
+const map = {
+    38: 0, // Up
+    39: 1, // Right
+    40: 2, // Down
+    37: 3, // Left
+    75: 0, // vim keybindings
+    76: 1,
+    74: 2,
+    72: 3,
+};
 
 const KeyboardInputManager = (WrappedComponent) => {
-    return class React extends Compnent {
-        state = {};
+    class HOCKeyboard extends React.Component {
+        state = {
+            events: {},
+        };
+        // this.listen();
+
+        on = (event, callback) => {
+            const { events } = this.state;
+            if (!events[event]) {
+                events[event] = [];
+            }
+            events[event].push(callback);
+        };
+        
+        emit = (event, data) => {
+            console.log('=============>', event, data);
+            const { events } = this.state;
+            const callbacks = events[event];
+            if (callbacks) {
+                callbacks.forEach((callback) => {
+                    callback(data);
+                });
+            }
+        };
+
+        gesture = () => {
+            const gestures = [Hammer.DIRECTION_UP, Hammer.DIRECTION_RIGHT, Hammer.DIRECTION_DOWN, Hammer.DIRECTION_LEFT];
+            const gameContainer = document.getElementsByClassName("game-container")[0];
+            const handler = Hammer(gameContainer, { drag_block_horizontal: true, drag_block_vertical: true });
+        
+            handler.on("swipe", (event) => {
+                event.gesture.preventDefault();
+                const mapped = gestures.indexOf(event.gesture.direction);
+                if (mapped !== -1) {
+                    this.emit("move", mapped);
+                }
+            });
+        }
+
+        keyHandling = (event) => {
+            const modifiers = event.altKey || event.ctrlKey || event.metaKey || event.shiftKey;
+            const mapped = map[event.which];
+
+            if (!modifiers) {
+                if (mapped !== undefined) {
+                    event.preventDefault();
+                    this.emit("move", mapped);
+                }
+                if (event.which === 32) {
+                    this.restart.bind(this)(event);
+                }
+            }
+        };
+
+        componentDidMount = () => {
+            document.addEventListener('keydown', this.keyHandling);
+        }
+
+        componentDidUnmount = () => {
+            window.removeEventListener('keydown', this.keyHandling);
+        }
 
         render() {
             const { extraProp, ...passThroughProps } = this.props;
-            return <WrappedComponent {...passThroughProps} /> 
+            return <WrappedComponent {...passThroughProps} />;
         }
     }
+
+    HOCKeyboard.propTypes = {
+        extraProp: PropTypes.string,
+    };
+
+    return HOCKeyboard;
 };
 
 export default KeyboardInputManager;
 
-function KeyboardInputManager() {
-    this.events = {};
-    this.listen();
-}
+// componentDidMount() {
+//     this.hammer = new Hammer(this.domElement);
+//     updateHammer(this.hammer, this.props);
+// }
 
-KeyboardInputManager.prototype.on = function (event, callback) {
-    if (!this.events[event]) {
-        this.events[event] = [];
-    }
-    this.events[event].push(callback);
-};
+// componentDidUpdate() {
+//     if (this.hammer) {
+//         updateHammer(this.hammer, this.props);
+//     }
+// }
 
-KeyboardInputManager.prototype.emit = function (event, data) {
-    var callbacks = this.events[event];
-    if (callbacks) {
-        callbacks.forEach(function (callback) {
-            callback(data);
-        });
-    }
-};
-
-KeyboardInputManager.prototype.listen = function () {
-    var self = this;
-
-    var map = {
-        38: 0, // Up
-        39: 1, // Right
-        40: 2, // Down
-        37: 3, // Left
-        75: 0, // vim keybindings
-        76: 1,
-        74: 2,
-        72: 3
-    };
-
-    document.addEventListener("keydown", function (event) {
-        var modifiers = event.altKey || event.ctrlKey || event.metaKey || event.shiftKey;
-        var mapped = map[event.which];
-
-        if (!modifiers) {
-            if (mapped !== undefined) {
-                event.preventDefault();
-                self.emit("move", mapped);
-            }
-            if (event.which === 32) {
-                self.restart.bind(self)(event);
-            }
-        }
-    });
-
-    var retry = document.getElementsByClassName("retry-button")[0];
-    retry.addEventListener("click", this.restart.bind(this));
-
-    // Listen to swipe events
-    var gestures = [Hammer.DIRECTION_UP, Hammer.DIRECTION_RIGHT, Hammer.DIRECTION_DOWN, Hammer.DIRECTION_LEFT];
-
-    var gameContainer = document.getElementsByClassName("game-container")[0];
-    var handler = Hammer(gameContainer, { drag_block_horizontal: true, drag_block_vertical: true });
-
-    handler.on("swipe", function (event) {
-        event.gesture.preventDefault();
-        mapped = gestures.indexOf(event.gesture.direction);
-        if (mapped !== -1) {
-            self.emit("move", mapped);
-        }
-    });
-};
-
+// componentWillUnmount() {
+//     if (this.hammer) {
+//         this.hammer.stop();
+//         this.hammer.destroy();
+//     }
+//     this.hammer = null;
+// }

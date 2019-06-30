@@ -20,12 +20,23 @@ const KeyboardInputManager = (WrappedComponent) => {
         };
         // this.listen();
 
+        // adding or seeting Event listeners
         on = (event, callback) => {
-            const { events } = this.state;
-            if (!events[event]) {
-                events[event] = [];
-            }
-            events[event].push(callback);
+            const cb = callback;
+            this.setState((prevState) => {
+                const { events: prevEvents } = prevState;
+                const res = { 
+                    events: {
+                        ...prevEvents,
+                        [event]: [
+                            ...(prevEvents[event] ? prevEvents[event]: []),
+                            cb,
+                        ],
+                    },
+                };
+                console.log('set evetns::: ', event, res, cb);
+                return res;
+            })
         };
         
         emit = (event, data) => {
@@ -72,13 +83,13 @@ const KeyboardInputManager = (WrappedComponent) => {
             document.addEventListener('keydown', this.keyHandling);
         }
 
-        componentDidUnmount = () => {
+        componentWillUnmount = () => {
             window.removeEventListener('keydown', this.keyHandling);
         }
 
         render() {
             const { extraProp, ...passThroughProps } = this.props;
-            return <WrappedComponent {...passThroughProps} />;
+            return <WrappedComponent {...passThroughProps} on={this.on} />;
         }
     }
 

@@ -1,13 +1,13 @@
 import React from 'react';
 import './App.css';
-import Layout from '../Game/Layout';
+import Game from '../Game/Game';
 // import AppHeader from './AppHeader';
 
 function App() {
     return (
         <div className="App">
             {/* <AppHeader /> */}
-            <Layout />
+            <Game Size={4} />
         </div>
     );
 }

@@ -31,9 +31,21 @@ class Game extends Component {
         const { on } = this.props;
         on("move", this.move.bind(this));
         on("restart", this.restart.bind(this));
-        this.setupGame();
         console.log('========@@ after');
+        this.addStartTiles();
     }
+    
+    componentDidMount() {
+        this.setupGame();
+    }
+    
+    setupGame = () => {
+        // this.addStartTiles();
+        console.log('#######  Game START #######');
+        const { cells } = this.state;
+        console.log('Tiles Added?', cells);
+        this.actuated();
+    };
 
     // Grid ---------------------------------------------
     eachCell = (callback) => {
@@ -102,14 +114,12 @@ class Game extends Component {
     // Game ---------------------------------------------
 
     restart = () => {
-        this.restart();
+        console.log('###  Reset  ###');
+        this.restarted();
         this.setupGame();
     };
 
-    setupGame = () => {
-        this.addStartTiles();
-        this.actuate();
-    };
+
 
     addStartTiles = () => {
         const startTiles = 2;
@@ -124,11 +134,6 @@ class Game extends Component {
             var tile = new Tile(this.randomAvailableCell(), value);
             this.insertTile(tile);
         }
-    };
-
-    actuate = () => {
-        const { cells, score, over, won } = this.state;
-        this.actuated(cells, { score, over, won });
     };
 
     prepareTiles = () => {
@@ -193,7 +198,7 @@ class Game extends Component {
                 this.over = true; // Game over!
             }
 
-            this.actuate();
+            this.actuated();
         }
     };
 
@@ -265,7 +270,7 @@ class Game extends Component {
 
 
     // Actuator ----------------------------------------------------------------------------------------
-    restart = () => {
+    restarted = () => {
         this.setState({ won: false, over: false });
     };
 
@@ -273,7 +278,10 @@ class Game extends Component {
     //     this.tileContainer = document.getElementsByClassName("tile-container")[0];
     // }
 
-    actuated = (cells, metadata) => {
+    actuated = () => {
+        const { cells, score, over, won } = this.state;
+        const metadata = {score, over, won };
+        console.log('===>>>', cells, metadata);
         var self = this;
         this.setState({ tileContainer: []});
         window.requestAnimationFrame(() => {

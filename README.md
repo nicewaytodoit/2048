@@ -1,10 +1,13 @@
 
 
-
-
-
-
-
+# Bug list 
+## 2019-06-30 10:00
++ setup tiles not working
+- Update Differences in Score does not work 
+- Transition animation while moving tiles does not work 
+- If tiles fill the entire grid game gets jamed
+- Reset button probably does not work
+- 
 
 
 

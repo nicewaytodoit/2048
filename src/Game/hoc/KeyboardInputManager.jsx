@@ -18,9 +18,7 @@ const KeyboardInputManager = (WrappedComponent) => {
         state = {
             events: {},
         };
-        // this.listen();
 
-        // adding or seeting Event listeners
         on = (event, callback) => {
             const cb = callback;
             this.setState((prevState) => {
@@ -34,13 +32,11 @@ const KeyboardInputManager = (WrappedComponent) => {
                         ],
                     },
                 };
-                console.log('set evetns::: ', event, res, cb);
                 return res;
             })
         };
         
         emit = (event, data) => {
-            console.log('=============>', event, data);
             const { events } = this.state;
             const callbacks = events[event];
             if (callbacks) {
@@ -55,11 +51,11 @@ const KeyboardInputManager = (WrappedComponent) => {
             const gameContainer = document.getElementsByClassName("game-container")[0];
             const handler = Hammer(gameContainer, { drag_block_horizontal: true, drag_block_vertical: true });
         
-            handler.on("swipe", (event) => {
+            handler.on('swipe', (event) => {
                 event.gesture.preventDefault();
                 const mapped = gestures.indexOf(event.gesture.direction);
                 if (mapped !== -1) {
-                    this.emit("move", mapped);
+                    this.emit('move', mapped);
                 }
             });
         }
@@ -71,10 +67,11 @@ const KeyboardInputManager = (WrappedComponent) => {
             if (!modifiers) {
                 if (mapped !== undefined) {
                     event.preventDefault();
-                    this.emit("move", mapped);
+                    this.emit('move', mapped);
                 }
                 if (event.which === 32) {
-                    this.restart.bind(this)(event);
+                    console.log(32, 'restart');
+                    this.emit('restart', event);
                 }
             }
         };
@@ -89,7 +86,7 @@ const KeyboardInputManager = (WrappedComponent) => {
 
         render() {
             const { extraProp, ...passThroughProps } = this.props;
-            return <WrappedComponent {...passThroughProps} on={this.on} />;
+            return <WrappedComponent {...passThroughProps} on={this.on} emit={this.emit} />;
         }
     }
 

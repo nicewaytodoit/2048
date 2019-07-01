@@ -24,14 +24,9 @@ class Game extends Component {
     }
 
     componentWillMount() {
-        // size
-        // const inputManager = new InputManager;
-        // const actuator = new Actuator;
-        console.log('========@@ b-for');
         const { on } = this.props;
         on("move", this.move.bind(this));
         on("restart", this.restart.bind(this));
-        console.log('========@@ after');
         this.addStartTiles();
     }
     
@@ -40,10 +35,6 @@ class Game extends Component {
     }
     
     setupGame = () => {
-        // this.addStartTiles();
-        console.log('#######  Game START #######');
-        const { cells } = this.state;
-        console.log('Tiles Added?', cells);
         this.actuated();
     };
 
@@ -68,7 +59,10 @@ class Game extends Component {
         return cells;
     };
     
-    cellsAvailable = () => !!this.availableCells().length;
+    cellsAvailable = () => {
+        const available = !!this.availableCells().length;
+        return available;
+    };
 
     randomAvailableCell = () => {
         let cells = this.availableCells();
@@ -78,7 +72,6 @@ class Game extends Component {
     };
 
     withinBounds = (position) => {
-        console.log('====With bounds()');
         const { Size } = this.props;
         return position.x >= 0 && position.x < Size && position.y >= 0 && position.y < Size;
     }
@@ -152,28 +145,22 @@ class Game extends Component {
     };
 
     move = (direction) => {
-        console.log('Enter den of move =====> 1');
-        var self = this;
-        if (this.over || this.won) return; // Don't do anything if the game's over
-        var cell, tile;
-        var vector = this.getVector(direction);
-        var traversals = this.buildTraversals(vector);
-        var moved = false;
+        const { over, won } = this.state;
+        if (over || won) return; // Don't do anything if the game's over
+        const vector = this.getVector(direction);
+        const traversals = this.buildTraversals(vector);
+        let moved = false;
         this.prepareTiles();
-        
-        console.log('Enter den of move =====> 2');
         
         traversals.x.forEach((x) => {
             traversals.y.forEach((y) => {
-                cell = { x: x, y: y };
-                tile = this.cellContent(cell);
-                console.log('Enter den of move =====> 3');
+                const cell = { x: x, y: y };
+                const tile = this.cellContent(cell);
                 if (tile) {
-                    console.log('Enter den of move =====> 4');
-                    var positions = this.findFarthestPosition(cell, vector);
-                    var next = this.cellContent(positions.next);
+                    const positions = this.findFarthestPosition(cell, vector);
+                    const next = this.cellContent(positions.next);
                     if (next && next.value === tile.value && !next.mergedFrom) {
-                        var merged = new Tile(positions.next, tile.value * 2);
+                        const merged = new Tile(positions.next, tile.value * 2);
                         merged.mergedFrom = [tile, next];
                         this.insertTile(merged);
                         this.removeTile(tile);
@@ -184,7 +171,7 @@ class Game extends Component {
                     else {
                         this.moveTile(tile, positions.farthest);
                     }
-                    if (!self.positionsEqual(cell, tile)) {
+                    if (!this.positionsEqual(cell, tile)) {
                         moved = true; // The tile moved from its original cell!
                     }
                 }
@@ -195,7 +182,7 @@ class Game extends Component {
             this.addRandomTile();
 
             if (!this.movesAvailable()) {
-                this.over = true; // Game over!
+                this.setState({ over: true }); // Game over!
             }
 
             this.actuated();
@@ -242,27 +229,29 @@ class Game extends Component {
     movesAvailable = () => this.cellsAvailable() || this.tileMatchesAvailable();
 
     tileMatchesAvailable = () => {
-        var self = this;
-        var tile;
-        for (var x = 0; x < this.size; x++) {
-            for (var y = 0; y < this.size; y++) {
+        let tile;
+        const { Size } = this.props;
+        for (let x = 0; x < Size; x++) {
+            for (let y = 0; y < Size; y++) {
                 tile = this.cellContent({ x: x, y: y });
                 if (tile) {
-                    for (var direction = 0; direction < 4; direction++) {
-                        var vector = self.getVector(direction);
-                        var cell = { x: x + vector.x, y: y + vector.y };
-                        var other = this.cellContent(cell);
+                    for (let direction = 0; direction < 4; direction++) {
+                        const vector = this.getVector(direction);
+                        const cell = { x: x + vector.x, y: y + vector.y };
+                        const other = this.cellContent(cell);
                         if (other) {
                             // something ???
                         }
 
                         if (other && other.value === tile.value) {
+                            console.log('Match Available: TRUE');
                             return true; // These two tiles can be merged
                         }
                     }
                 }
             }
         }
+        console.log('Match Available: FALSE');
         return false;
     };
 
@@ -272,6 +261,7 @@ class Game extends Component {
     // Actuator ----------------------------------------------------------------------------------------
     restarted = () => {
         this.setState({ won: false, over: false });
+        this.addStartTiles();
     };
 
     // function HTMLActuator() {
@@ -293,8 +283,8 @@ class Game extends Component {
                     }
                 });
             });
-            this.setState((prevSate) => ({ score: metadata.score, difference: metadata.score - prevSate.score }));
         });
+        this.setState((prevSate) => ({ score: metadata.score, difference: metadata.score - prevSate.score }));
     };
 
     // clearContainer = (container) => {
@@ -351,14 +341,14 @@ class Game extends Component {
     };
 
     render () {
-        const { Size } = this.props;
-        const { score, difference, tileContainer } = this.state;
+        const { Size, emit } = this.props;
+        const { score, difference, tileContainer, won, over } = this.state;
 
         return (
             <div className="container">
                 <Header score={score} difference={difference} />
                 <Hint />
-                <Body Size={Size} tiles={tileContainer} />
+                <Body Size={Size} tiles={tileContainer} message={{ won, over }} emit={emit} />
                 <Help />
                 <Divider />
                 <Credits />
@@ -370,6 +360,7 @@ class Game extends Component {
 Game.propTypes = {
     Size: PropTypes.number.isRequired,
     on: PropTypes.func,
+    emit: PropTypes.func,
 };
 
 export default KeyboardInputManager(Game);

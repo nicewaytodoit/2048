@@ -8,12 +8,10 @@ class Tile {
     }
 
     savePosition = () => {
-        console.log('Tile Save Pos');
         this.previousPosition = { x: this.x, y: this.y };
     };
     
     updatePosition = (position) => {
-        console.log('Tile Update Pos', position);
         this.x = position.x;
         this.y = position.y;
     };

@@ -7,17 +7,17 @@
 
 ## 2019-06-30 06:00
 =TODO===
-- Reset button probably does not work
++ Reset button probably does not work
   + KeyBoard fixed and button fixed 
   + not connected with emit
-  - reset functioality still broken
+  + reset functioality still broken
++ If tiles fill the entire grid game gets jamed
++ more tiles very slow
++ Update Differences in Score does not work 
 
-- Update Differences in Score does not work 
 - Transition animation while moving tiles does not work
   - in order to make it work I would need to, hande each Tile not rerender all
   - styles are hard coded so if I would to increase size of the table this will not work
-- If tiles fill the entire grid game gets jamed
-- more tiles very slow
 
 - https://keycode.info/ -> 32 is spacebar -> RESET -> HammerJS 
 

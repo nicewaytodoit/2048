@@ -8,18 +8,18 @@ import Tile from './Tile';
 import KeyboardInputManager from './hoc/KeyboardInputManager';
 import './main.scss';
 
+const init = (size) => Array(size).fill(null).map(() => Array(size).fill(null));
+
 class Game extends Component {
     constructor(props) {
         super(props);
         const { Size } = props;
-        const init = (size) => Array(size).fill(null).map(() => Array(size).fill(null));
         this.state = {
             cells: init(Size),
             score: 0,
             difference: 0,
             over: false,
             won: false,
-            tileContainer: [],
         };
     }
 
@@ -30,14 +30,6 @@ class Game extends Component {
         this.addStartTiles();
     }
     
-    componentDidMount() {
-        this.setupGame();
-    }
-    
-    setupGame = () => {
-        this.actuated();
-    };
-
     // Grid ---------------------------------------------
     eachCell = (callback) => {
         const { Size } = this.props;
@@ -107,12 +99,12 @@ class Game extends Component {
     // Game ---------------------------------------------
 
     restart = () => {
-        console.log('###  Reset  ###');
-        this.restarted();
-        this.setupGame();
+        console.log('RESET');
+        const { Size } = this.props;
+        this.setState(() => ({ won: false, over: false, cells: init(Size), score:0, difference: 0 }), () => {
+            this.addStartTiles();
+        });
     };
-
-
 
     addStartTiles = () => {
         const startTiles = 2;
@@ -145,11 +137,13 @@ class Game extends Component {
     };
 
     move = (direction) => {
-        const { over, won } = this.state;
+        const { over, won, score } = this.state;
         if (over || won) return; // Don't do anything if the game's over
         const vector = this.getVector(direction);
         const traversals = this.buildTraversals(vector);
         let moved = false;
+        let totalScore = score;
+        let difference = 0;
         this.prepareTiles();
         
         traversals.x.forEach((x) => {
@@ -165,8 +159,12 @@ class Game extends Component {
                         this.insertTile(merged);
                         this.removeTile(tile);
                         tile.updatePosition(positions.next);
-                        this.setState((prevState) => ({ score: prevState.score + merged.value }))
-                        if (merged.value === 2048) this.setState({ won: true });
+                        totalScore = totalScore + merged.value;
+                        difference = difference + merged.value;
+                        if (merged.value === 2048) {
+                            this.setState({ won: true });
+                            return;
+                        }
                     }
                     else {
                         this.moveTile(tile, positions.farthest);
@@ -177,15 +175,13 @@ class Game extends Component {
                 }
             });
         });
-
+        
         if (moved) {
-            this.addRandomTile();
-
-            if (!this.movesAvailable()) {
-                this.setState({ over: true }); // Game over!
-            }
-
-            this.actuated();
+            this.setState(() => ({ score: totalScore, difference: difference }));
+                this.addRandomTile();
+                if (!this.movesAvailable()) {
+                    this.setState(()=>({ over: true })); // Game over!
+                }
         }
     };
 
@@ -239,9 +235,6 @@ class Game extends Component {
                         const vector = this.getVector(direction);
                         const cell = { x: x + vector.x, y: y + vector.y };
                         const other = this.cellContent(cell);
-                        if (other) {
-                            // something ???
-                        }
 
                         if (other && other.value === tile.value) {
                             console.log('Match Available: TRUE');
@@ -259,77 +252,6 @@ class Game extends Component {
 
 
     // Actuator ----------------------------------------------------------------------------------------
-    restarted = () => {
-        this.setState({ won: false, over: false });
-        this.addStartTiles();
-    };
-
-    // function HTMLActuator() {
-    //     this.tileContainer = document.getElementsByClassName("tile-container")[0];
-    // }
-
-    actuated = () => {
-        const { cells, score, over, won } = this.state;
-        const metadata = {score, over, won };
-        console.log('===>>>', cells, metadata);
-        var self = this;
-        this.setState({ tileContainer: []});
-        window.requestAnimationFrame(() => {
-            // self.clearContainer(self.tileContainer);
-            cells.forEach((column) => {
-                column.forEach((cell) => {
-                    if (cell) {
-                        self.addTile(cell);
-                    }
-                });
-            });
-        });
-        this.setState((prevSate) => ({ score: metadata.score, difference: metadata.score - prevSate.score }));
-    };
-
-    // clearContainer = (container) => {
-    //     while (container.firstChild) {
-    //         container.removeChild(container.firstChild);
-    //     }
-    // };
-
-    addTile = (tile) => {
-        const self = this;
-        // const element = document.createElement("div");
-        const position = tile.previousPosition || { x: tile.x, y: tile.y };
-        const positionClass = this.positionClass(position);
-        // We can't use classlist because it somehow glitches when replacing classes
-        var classes = ["tile", "tile-" + tile.value, positionClass];
-        // this.applyClasses(element, classes);
-        // element.textContent = tile.value;
-
-        if (tile.previousPosition) {
-            classes[2] = self.positionClass({ x: tile.x, y: tile.y });
-        }
-        else if (tile.mergedFrom) {
-            classes.push("tile-merged");
-            // this.applyClasses(element, classes);
-            // Render the tiles that merged
-            tile.mergedFrom.forEach((merged) => {
-                self.addTile(merged);
-            });
-        }
-        else {
-            classes.push("tile-new");
-            // this.applyClasses(element, classes);
-        }
-
-        // Put the tile on the board
-        // this.tileContainer.appendChild(element);
-        this.setState((prevState) => ({ tileContainer: [
-            ...prevState.tileContainer,
-            <div key={`tile-${prevState.tileContainer.length+1}`} className={classes.join(' ')}>{tile.value}</div>,
-        ]}))
-    };
-
-    // applyClasses = (element, classes) => {
-    //     element.setAttribute("class", classes.join(" "));
-    // };
 
     normalizePosition = (position) => {
         return { x: position.x + 1, y: position.y + 1 };
@@ -342,7 +264,40 @@ class Game extends Component {
 
     render () {
         const { Size, emit } = this.props;
-        const { score, difference, tileContainer, won, over } = this.state;
+        const { cells, score, difference, won, over } = this.state;
+        let tileContainer = [];
+            
+        const addTile = (tile) => {
+            const position = tile.previousPosition || { x: tile.x, y: tile.y };
+            const positionClass = this.positionClass(position);
+            var classes = ["tile", "tile-" + tile.value, positionClass];
+    
+            if (tile.previousPosition) {
+                classes[2] = this.positionClass({ x: tile.x, y: tile.y });
+            }
+            else if (tile.mergedFrom) {
+                classes.push("tile-merged");
+                tile.mergedFrom.forEach((merged) => {
+                    addTile(merged);
+                });
+            }
+            else {
+                classes.push("tile-new");
+            }
+    
+            tileContainer = [
+                ...tileContainer,
+                <div key={`tile-${tileContainer.length+1}`} className={classes.join(' ')}>{tile.value}</div>,
+            ];
+        };
+
+        cells.forEach((column) => {
+            column.forEach((cell) => {
+                if (cell) {
+                    addTile(cell);
+                }
+            });
+        });
 
         return (
             <div className="container">

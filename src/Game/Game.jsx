@@ -17,6 +17,7 @@ class Game extends Component {
         this.state = {
             cells: init(Size),
             score: 0,
+            topscore: 0,
             difference: 0,
             over: false,
             won: false,
@@ -137,7 +138,7 @@ class Game extends Component {
     };
 
     move = (direction) => {
-        const { over, won, score } = this.state;
+        const { over, won, score, topscore } = this.state;
         if (over || won) return; // Don't do anything if the game's over
         const vector = this.getVector(direction);
         const traversals = this.buildTraversals(vector);
@@ -177,7 +178,7 @@ class Game extends Component {
         });
         
         if (moved) {
-            this.setState(() => ({ score: totalScore, difference: difference }));
+            this.setState(() => ({ score: totalScore, difference: difference, ...(totalScore > topscore && { topscore: totalScore }) }));
                 this.addRandomTile();
                 if (!this.movesAvailable()) {
                     this.setState(()=>({ over: true })); // Game over!
@@ -264,7 +265,7 @@ class Game extends Component {
 
     render () {
         const { Size, emit } = this.props;
-        const { cells, score, difference, won, over } = this.state;
+        const { cells, score, difference, won, over, topscore } = this.state;
         let tileContainer = [];
             
         const addTile = (tile) => {
@@ -301,8 +302,8 @@ class Game extends Component {
 
         return (
             <div className="container">
-                <Header score={score} difference={difference} />
-                <Hint />
+                <Header score={score} difference={difference} topscore={topscore} />
+                <Hint emit={emit} />
                 <Body Size={Size} tiles={tileContainer} message={{ won, over }} emit={emit} />
                 <Help />
                 <Divider />

@@ -3,64 +3,66 @@
 // From: https://github.com/Team-Sass/Sassy-math/blob/master/sass/math.scss#L36
 
 @function exponent($base, $exponent) {
-    // reset value
-    $value: $base;
-    // positive intergers get multiplied
-    @if $exponent > 1 {
-      @for $i from 2 through $exponent {
-        $value: $value * $base; } }
-    // negitive intergers get divided. A number divided by itself is 1
-    @if $exponent < 1 {
-      @for $i from 0 through -$exponent {
-        $value: $value / $base; } }
-    // return the last value written
-    @return $value;
+  // reset value
+  $value: $base;
+  // positive intergers get multiplied
+  @if $exponent > 1 {
+    @for $i from 2 through $exponent {
+      $value: $value * $base; } }
+  // negitive intergers get divided. A number divided by itself is 1
+  @if $exponent < 1 {
+    @for $i from 0 through -$exponent {
+      $value: $value / $base; } }
+  // return the last value written
+  @return $value;
+}
+
+@function pow($base, $exponent) {
+  @return exponent($base, $exponent);
+}
+
+// Transition mixins
+@mixin transition($args...) {
+  -webkit-transition: $args;
+  -moz-transition: $args;
+}
+
+@mixin transition-property($args...) {
+  -webkit-transition-property: $args;
+  -moz-transition-property: $args;
+}
+
+// Keyframe animations
+@mixin keyframes($animationname) {
+  @-webkit-keyframes #{$animationname} {
+    @content;
   }
-  
-  @function pow($base, $exponent) {
-    @return exponent($base, $exponent);
+  @-moz-keyframes #{$animationname} {
+    @content;
   }
-  
-  // Transition mixins
-  @mixin transition($args...) {
-    -webkit-transition: $args;
-    -moz-transition: $args;
+  @keyframes #{$animationname} {
+    @content;
   }
-  
-  @mixin transition-property($args...) {
-    -webkit-transition-property: $args;
-    -moz-transition-property: $args;
+}
+
+@mixin animation($str) {
+  -webkit-animation: #{$str};
+  -moz-animation: #{$str};
+  animation: #{$str};
+}
+
+@mixin animation-fill-mode($str) {
+  -webkit-animation-fill-mode: #{$str};
+  -moz-animation-fill-mode: #{$str};
+  animation-fill-mode: #{$str};
+}
+
+// Media queries
+@mixin smaller($width) {
+  @media screen and (max-width: $width) {
+    @content;
   }
-  
-  // Keyframe animations
-  @mixin keyframes($animation-name) {
-    @-webkit-keyframes $animation-name {
-      @content;
-    }
-    @-moz-keyframes $animation-name {
-      @content;
-    }
-    @keyframes $animation-name {
-      @content;
-    }
-  }
-  
-  @mixin animation($str) {
-    -webkit-animation: #{$str};
-    -moz-animation: #{$str};
-  }
-  
-  @mixin animation-fill-mode($str) {
-    -webkit-animation-fill-mode: #{$str};
-    -moz-animation-fill-mode: #{$str};
-  }
-  
-  // Media queries
-  @mixin smaller($width) {
-    @media screen and (max-width: $width) {
-      @content;
-    }
-  }
+}
   
   
   
@@ -110,7 +112,7 @@
     float: left;
   }
   
-  @include keyframes(move-up) {
+  @include keyframes(moveup) {
     0% {
       top: 25px;
       opacity: 1;
@@ -122,9 +124,8 @@
     }
   }
   
-  .score-container {
+  .score-container, .best-container {
     $height: 25px;
-  
     position: relative;
     float: right;
     background: $game-container-background;
@@ -142,7 +143,6 @@
       width: 100%;
       top: 10px;
       left: 0;
-      content: "Score";
       text-transform: uppercase;
       font-size: 13px;
       line-height: 13px;
@@ -150,6 +150,20 @@
       color: $tile-color;
     }
   
+  }
+
+  .best-container {
+    margin-left: 5px;
+    &:after {
+      content: "Best";
+    } 
+  }
+
+  .score-container {
+    $height: 25px;
+    &:after {
+      content: "Score";
+    } 
     .score-addition {
       position: absolute;
       right: 30px;
@@ -159,11 +173,11 @@
       font-weight: bold;
       color: rgba($text-color, .9);
       z-index: 100;
-      @include animation(move-up 600ms ease-in);
+      @include animation(moveup 600ms ease-in);
       @include animation-fill-mode(both);
     }
   }
-  
+
   p {
     margin-top: 0;
     margin-bottom: 10px;
@@ -266,7 +280,7 @@
           // margin-top: 59px;
         }
   
-        @include animation(fade-in 800ms ease $transition-speed * 12);
+        @include animation(fade-in 700ms ease $transition-speed * 12);
         @include animation-fill-mode(both);
   
         &.game-won {
@@ -439,7 +453,7 @@
   }
   
   .tile-new {
-    @include animation(appear 200ms ease $transition-speed);
+    @include animation(appear 250ms ease $transition-speed);
     @include animation-fill-mode(both);
   }
   
@@ -462,12 +476,27 @@
   
   .tile-merged {
     z-index: 20;
-    @include animation(pop 200ms ease $transition-speed);
+    @include animation(pop 400ms ease $transition-speed);
     @include animation-fill-mode(both);
   }
   
   .game-intro {
     margin-bottom: 0;
+
+    .restart-button {
+      display: inline-block;
+      background: #8f7a66;
+      border-radius: 3px;
+      padding: 0 20px;
+      text-decoration: none;
+      color: #f9f6f2;
+      height: 40px;
+      line-height: 42px;
+      cursor: pointer;
+      display: block;
+      text-align: center;
+      float: right;
+    }
   }
   
   .game-explanation {
@@ -501,6 +530,10 @@
     }
   
     .score-container {
+      margin-top: 0;
+    }
+
+    .best-container {
       margin-top: 0;
     }
   

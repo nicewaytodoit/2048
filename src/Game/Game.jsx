@@ -179,10 +179,10 @@ class Game extends Component {
         
         if (moved) {
             this.setState(() => ({ score: totalScore, difference: difference, ...(totalScore > topscore && { topscore: totalScore }) }));
-                this.addRandomTile();
-                if (!this.movesAvailable()) {
-                    this.setState(()=>({ over: true })); // Game over!
-                }
+            this.addRandomTile();
+            if (!this.movesAvailable()) {
+                this.setState(()=>({ over: true })); // Game over!
+            }
         }
     };
 
@@ -238,7 +238,6 @@ class Game extends Component {
                         const other = this.cellContent(cell);
 
                         if (other && other.value === tile.value) {
-                            console.log('Match Available: TRUE');
                             return true; // These two tiles can be merged
                         }
                     }
@@ -253,10 +252,7 @@ class Game extends Component {
 
 
     // Actuator ----------------------------------------------------------------------------------------
-
-    normalizePosition = (position) => {
-        return { x: position.x + 1, y: position.y + 1 };
-    };
+    normalizePosition = (position) => ({ x: position.x + 1, y: position.y + 1 });
 
     positionClass = (position) => {
         position = this.normalizePosition(position);

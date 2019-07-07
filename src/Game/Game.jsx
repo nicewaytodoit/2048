@@ -21,6 +21,8 @@ class Game extends Component {
             difference: 0,
             over: false,
             won: false,
+            tempTiles: [{ id: 'tile_1', x: 1, y: 1, value: 4 }],
+            tempStep: 0,
         };
     }
 
@@ -259,48 +261,81 @@ class Game extends Component {
         return "tile-position-" + position.x + "-" + position.y;
     };
 
+    role = () => {
+        this.setState((prev) => {
+            const step = (prev.tempStep + 1) > 3 ? 0 : prev.tempStep + 1; 
+            return { tempStep: step };
+        });
+    }
+
+
     render () {
         const { Size, emit } = this.props;
-        const { cells, score, difference, won, over, topscore } = this.state;
+        const { /* cells, */ tempTiles, tempStep, score, difference, won, over, topscore } = this.state;
         let tileContainer = [];
             
-        const addTile = (tile) => {
-            const position = tile.previousPosition || { x: tile.x, y: tile.y };
-            const positionClass = this.positionClass(position);
-            var classes = ["tile", "tile-" + tile.value, positionClass];
+        // const addTile = (tile) => {
+        //     const position = tile.previousPosition || { x: tile.x, y: tile.y };
+        //     const positionClass = this.positionClass(position);
+        //     var classes = ["tile", "tile-" + tile.value, positionClass];
     
-            if (tile.previousPosition) {
-                classes[2] = this.positionClass({ x: tile.x, y: tile.y });
-            }
-            else if (tile.mergedFrom) {
-                classes.push("tile-merged");
-                tile.mergedFrom.forEach((merged) => {
-                    addTile(merged);
-                });
-            }
-            else {
-                classes.push("tile-new");
-            }
+        //     if (tile.previousPosition) {
+        //         classes[2] = this.positionClass({ x: tile.x, y: tile.y });
+        //     }
+        //     else if (tile.mergedFrom) {
+        //         classes.push("tile-merged");
+        //         tile.mergedFrom.forEach((merged) => {
+        //             addTile(merged);
+        //         });
+        //     }
+        //     else {
+        //         classes.push("tile-new");
+        //     }
     
-            tileContainer = [
-                ...tileContainer,
-                <div key={`tile-${tileContainer.length+1}`} className={classes.join(' ')}>{tile.value}</div>,
-            ];
-        };
+        //     tileContainer = [
+        //         ...tileContainer,
+        //         <div key={`tile-${tileContainer.length+1}`} className={classes.join(' ')}>{tile.value}</div>,
+        //     ];
+        // };
 
-        cells.forEach((column) => {
-            column.forEach((cell) => {
-                if (cell) {
-                    addTile(cell);
-                }
-            });
-        });
+        // cells.forEach((column) => {
+        //     column.forEach((cell) => {
+        //         if (cell) {
+        //             addTile(cell);
+        //         }
+        //     });
+        // });
+
+        const mapTile = (tile, position) => {
+            const map = [
+                { x: 0, y: 0 },
+                { x: 3, y: 0 },
+                { x: 3, y: 3 },
+                { x: 0, y: 3 },
+            ];
+            return { ...tile, x: map[position].x, y: map[position].y };
+        }
+
+        tileContainer = tempTiles.map((tile) => (
+            <div
+                key={`tile-${tileContainer.length+1}`}
+                className={["tile", "tile-" + tile.value, this.positionClass(mapTile(tile, tempStep))].join(' ')}
+            >
+                {tile.value}
+            </div>
+        ));
 
         return (
             <div className="container">
                 <Header score={score} difference={difference} topscore={topscore} />
                 <Hint emit={emit} />
-                <Body Size={Size} tiles={tileContainer} message={{ won, over }} emit={emit} />
+                <button type="button" onClick={this.role}>Roll Those</button>
+                <Body 
+                    Size={Size} 
+                    tiles={tileContainer} 
+                    message={{ won, over }} 
+                    emit={emit}
+                />
                 <Help />
                 <Divider />
                 <Credits />

@@ -4,7 +4,7 @@ import Body from './Body/Body';
 import Header from './Header';
 import { Help, Divider, Credits } from './Info';
 import Hint from './Hint';
-import Tile from './Tile';
+import Tile, { getTileSize } from './Tile';
 import KeyboardInputManager from './hoc/KeyboardInputManager';
 import './main.scss';
 
@@ -27,6 +27,7 @@ class Game extends Component {
                 { id: 'tile_3', x: 3, y: 3, value: 8 },
             ],
             tempStep: 0,
+            target: 1024 * Math.pow(2, (Size - 3)),
         };
     }
 
@@ -144,7 +145,7 @@ class Game extends Component {
     };
 
     move = (direction) => {
-        const { over, won, score, topscore } = this.state;
+        const { over, won, score, topscore, target } = this.state;
         if (over || won) return; // Don't do anything if the game's over
         const vector = this.getVector(direction);
         const traversals = this.buildTraversals(vector);
@@ -168,7 +169,7 @@ class Game extends Component {
                         tile.updatePosition(positions.next);
                         totalScore = totalScore + merged.value;
                         difference = difference + merged.value;
-                        if (merged.value === 2048) {
+                        if (merged.value === target) {
                             this.setState({ won: true });
                             return;
                         }
@@ -275,7 +276,7 @@ class Game extends Component {
 
     render () {
         const { Size, emit } = this.props;
-        const { /* cells, */ tempTiles, tempStep, score, difference, won, over, topscore } = this.state;
+        const { /* cells, */ tempTiles, tempStep, score, difference, won, over, topscore, target } = this.state;
         let tileContainer = [];
             
         // const addTile = (tile) => {
@@ -311,22 +312,29 @@ class Game extends Component {
         // });
 
         const mapTile = (tile, position, index) => {
+            const maxSize = Size -1;
             const map = [
                 { x: 0, y: 0 },
-                { x: 3, y: 0 },
-                { x: 3, y: 3 },
-                { x: 0, y: 3 },
+                { x: maxSize, y: 0 },
+                { x: maxSize, y: maxSize },
+                { x: 0, y: maxSize },
             ];
             const relativeStep = (position + index) % 4; 
             return { ...tile, x: map[relativeStep].x, y: map[relativeStep].y };
         }
 
-        const getStyle = (normalisedTile) => {
-
+        const getStyle = (normalisedTile, size) => {
+            const tileSize = getTileSize(size);
+            const lineHeight = tileSize + 10;
+            const tileAndSpaceSize = tileSize + 15;
             return {
                 position: 'absolute',
-                left: `${normalisedTile.x * 121}px`,
-                top: `${normalisedTile.y * 121}px`,
+                width: `${tileSize}px`,
+                height: `${tileSize}px`,
+                lineHeight: `${lineHeight}px`,
+                left: `${normalisedTile.x * tileAndSpaceSize}px`,
+                top: `${normalisedTile.y * tileAndSpaceSize}px`,
+                fontSize: `${((55 * 4) / size)}px`,
             };
         }
 
@@ -338,7 +346,7 @@ class Game extends Component {
                     "tile-" + tile.value,
                     // this.positionClass(mapTile(tile, tempStep, i)),
                 ].join(' ')}
-                style={getStyle(mapTile(tile, tempStep, i))}
+                style={getStyle(mapTile(tile, tempStep, i), Size)}
             >
                 {tile.value}
             </div>
@@ -347,7 +355,7 @@ class Game extends Component {
         return (
             <div className="container">
                 <Header score={score} difference={difference} topscore={topscore} />
-                <Hint emit={emit} />
+                <Hint emit={emit} target={target} />
                 <button type="button" onClick={this.role}>Roll Those</button>
                 <Body 
                     Size={Size} 

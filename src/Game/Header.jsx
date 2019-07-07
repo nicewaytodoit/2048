@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 const Header = ({ score = 0, topscore = 0, difference = 0 }) => {
     return (
         <div className="heading">
-            <h1 className="title">2048</h1>
+            <h1 className="title">r1024</h1>
             <div className="best-container">
                 {topscore}
             </div>

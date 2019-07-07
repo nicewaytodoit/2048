@@ -1,14 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Hint = ({ emit }) => {
+const Hint = ({ emit, target }) => {
     const restart = (event) => {
         event.preventDefault();
         emit("restart");
     };
     return (
         <p className="game-intro">
-            Join the numbers and get to the <strong>2048 tile!</strong>
+            Join the numbers and get to the <strong>{target} tile!</strong>
             <a
                 className="restart-button"
                 onClick={restart}
@@ -25,6 +25,7 @@ const Hint = ({ emit }) => {
 
 Hint.propTypes = {
     emit: PropTypes.func.isRequired,
+    target: PropTypes.number.isRequired,
 }
 
 export default Hint;

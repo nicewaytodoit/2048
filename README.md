@@ -26,13 +26,17 @@
 + creating fixed tiles
 + creating step circular movement
   + tile must have fixed keyID
-    - maybe creating name would help by index of added tiles
-    - in radom tile add name and assign that to Key name
-- creating size of the grid chooser
+    + maybe creating name would help by index of added tiles
 + creating infinite movement styles (beyond css)
 + convert Positions from fixed class to => infinite styles
-- convert Value (colors 2,4,8,16...) from fixed class to => infinite styles
++ Font Resize
++ Grid Resize
++ Update credits
 
+- convert Value (colors 2,4,8,16...) from fixed class to => infinite styles
+- creating size of the grid chooser
+- Inedex each radomly created tile by adding name and assign that name to Key
+- speed of this with lots of tiles ???
 
 
 # Features

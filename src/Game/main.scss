@@ -334,9 +334,9 @@
     }
   
     .tile {
-      width: $tile-size;
-      height: $tile-size;
-      line-height: $tile-size + 10px;
+      // width: $tile-size;
+      // height: $tile-size;
+      // line-height: $tile-size + 10px;
   
       // Build position classes
       @for $x from 1 through $grid-row-cells {
@@ -362,7 +362,7 @@
     font-weight: bold;
     z-index: 10;
   
-    font-size: 55px;
+    // font-size: 55px;
   
     @include transition($transition-speed ease-in-out);
     @include transition-property(top, left);

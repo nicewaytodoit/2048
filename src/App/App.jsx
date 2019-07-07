@@ -7,7 +7,7 @@ function App() {
     return (
         <div className="App">
             {/* <AppHeader /> */}
-            <Game Size={7} />
+            <Game Size={8} />
         </div>
     );
 }

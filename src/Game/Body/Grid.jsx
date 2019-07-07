@@ -2,20 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Row from './Row';
 import Cell from './Cell';
-
+import { getTileSize } from '../Tile';
 
 const Grid = (props) => {
     const { Size } = props;
     const grid = Array(Size).fill(1);
-    const tileDimensions = {
-        fieldWidth: 500,
-        gridSpacing: 15,
-        gridRowCells: Size,
-        tileBorderRadius: 3,
-    };
-
-    const tileSize = (tileDimensions.fieldWidth - tileDimensions.gridSpacing * (tileDimensions.gridRowCells + 1)) / tileDimensions.gridRowCells;
-
+    const tileSize = getTileSize(Size);
     return (
         <div className="grid-container">
             {grid.map((v, i) => (

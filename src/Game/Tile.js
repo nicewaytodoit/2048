@@ -17,4 +17,18 @@ class Tile {
     };
 }
 
-export default Tile;
+const getTileSize = (size) => {
+    const tileDimensions = {
+        fieldWidth: 500,
+        gridSpacing: 15,
+        gridRowCells: size,
+        tileBorderRadius: 3,
+    };
+
+    return (tileDimensions.fieldWidth - tileDimensions.gridSpacing * (tileDimensions.gridRowCells + 1)) / tileDimensions.gridRowCells;
+};
+
+export {
+    Tile as default,
+    getTileSize,
+};

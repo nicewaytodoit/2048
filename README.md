@@ -28,9 +28,9 @@
   + tile must have fixed keyID
     - maybe creating name would help by index of added tiles
     - in radom tile add name and assign that to Key name
-- creating size of the grid chooser 
-- creating infinite movement styles (beyond css)
-- convert Positions from fixed class to => infinite styles
+- creating size of the grid chooser
++ creating infinite movement styles (beyond css)
++ convert Positions from fixed class to => infinite styles
 - convert Value (colors 2,4,8,16...) from fixed class to => infinite styles
 
 

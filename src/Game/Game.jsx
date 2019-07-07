@@ -321,10 +321,24 @@ class Game extends Component {
             return { ...tile, x: map[relativeStep].x, y: map[relativeStep].y };
         }
 
+        const getStyle = (normalisedTile) => {
+
+            return {
+                position: 'absolute',
+                left: `${normalisedTile.x * 121}px`,
+                top: `${normalisedTile.y * 121}px`,
+            };
+        }
+
         tileContainer = tempTiles.map((tile, i) => (
             <div
                 key={tile.id}
-                className={["tile", "tile-" + tile.value, this.positionClass(mapTile(tile, tempStep, i))].join(' ')}
+                className={[
+                    "tile",
+                    "tile-" + tile.value,
+                    // this.positionClass(mapTile(tile, tempStep, i)),
+                ].join(' ')}
+                style={getStyle(mapTile(tile, tempStep, i))}
             >
                 {tile.value}
             </div>

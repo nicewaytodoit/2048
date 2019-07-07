@@ -21,7 +21,11 @@ class Game extends Component {
             difference: 0,
             over: false,
             won: false,
-            tempTiles: [{ id: 'tile_1', x: 1, y: 1, value: 4 }],
+            tempTiles: [
+                { id: 'tile_1', x: 0, y: 0, value: 3 },
+                { id: 'tile_2', x: 3, y: 0, value: 5 },
+                { id: 'tile_3', x: 3, y: 3, value: 7 },
+            ],
             tempStep: 0,
         };
     }
@@ -306,20 +310,21 @@ class Game extends Component {
         //     });
         // });
 
-        const mapTile = (tile, position) => {
+        const mapTile = (tile, position, index) => {
             const map = [
                 { x: 0, y: 0 },
                 { x: 3, y: 0 },
                 { x: 3, y: 3 },
                 { x: 0, y: 3 },
             ];
-            return { ...tile, x: map[position].x, y: map[position].y };
+            const relativeStep = (position + index) % 4; 
+            return { ...tile, x: map[relativeStep].x, y: map[relativeStep].y };
         }
 
-        tileContainer = tempTiles.map((tile) => (
+        tileContainer = tempTiles.map((tile, i) => (
             <div
-                key={`tile-${tileContainer.length+1}`}
-                className={["tile", "tile-" + tile.value, this.positionClass(mapTile(tile, tempStep))].join(' ')}
+                key={tile.id}
+                className={["tile", "tile-" + tile.value, this.positionClass(mapTile(tile, tempStep, i))].join(' ')}
             >
                 {tile.value}
             </div>

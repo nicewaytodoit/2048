@@ -22,9 +22,9 @@ class Game extends Component {
             over: false,
             won: false,
             tempTiles: [
-                { id: 'tile_1', x: 0, y: 0, value: 3 },
-                { id: 'tile_2', x: 3, y: 0, value: 5 },
-                { id: 'tile_3', x: 3, y: 3, value: 7 },
+                { id: 'tile_1', x: 0, y: 0, value: 2 },
+                { id: 'tile_2', x: 3, y: 0, value: 4 },
+                { id: 'tile_3', x: 3, y: 3, value: 8 },
             ],
             tempStep: 0,
         };

@@ -1,8 +1,8 @@
 {
-  "name": "2048",
-  "version": "0.0.1",
+  "name": "r1024",
+  "version": "0.0.2",
   "author": "Aleksandar Ristevski",
-  "description": "Just for fun porting game 2048 to React and evolving it just a bit",
+  "description": "Just for fun converting game 2048 to React and evolving it just a bit",
   "private": true,
   "dependencies": {
     "@babel/core": "7.4.3",

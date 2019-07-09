@@ -18,7 +18,7 @@ const sizes = [
 
 const SelectControl = ({ GridSize, HandleChange }) => (
     <select selected={GridSize} onChange={HandleChange}>
-        <option key="k-0" value="">Please Select</option>
+        <option key="k-0" value={0}>Please Select</option>
         {sizes.map((item) =><option key={`k-${item.value}-${item.value}`} value={item.value}>{item.text} - {item.value} x {item.value}</option>)}
     </select>
 );
@@ -30,13 +30,13 @@ SelectControl.propTypes = {
 
 class App extends React.Component {
     state = {
-        GridSize: null,
+        GridSize: 0,
         GameState: false,
     };
 
     ValueChange = (e) => {
         const val = e.target.value;
-        this.setState(() => ({ GridSize: val}));
+        this.setState(() => ({ GridSize: Number.parseInt(val)}));
     }
     
     StartGame = () => {
@@ -62,7 +62,7 @@ class App extends React.Component {
                         <button type="button">Leaderboard</button>
                     </div>
                 )}
-                {GameState && <Game Size={Number.parseInt(GridSize)} />}
+                {GameState && <Game Size={GridSize} />}
             </div>
         );
     }

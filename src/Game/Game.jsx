@@ -15,18 +15,19 @@ class Game extends Component {
         super(props);
         const { Size } = props;
         this.state = {
+            tileCounter: 0,
             cells: init(Size),
             score: 0,
             topscore: 0,
             difference: 0,
             over: false,
             won: false,
-            tempTiles: [
-                { id: 'tile_1', x: 0, y: 0, value: 2 },
-                { id: 'tile_2', x: 3, y: 0, value: 4 },
-                { id: 'tile_3', x: 3, y: 3, value: 8 },
-            ],
-            tempStep: 0,
+            // tempTiles: [
+            //     { id: 'tile_1', x: 0, y: 0, value: 2 },
+            //     { id: 'tile_2', x: 3, y: 0, value: 4 },
+            //     { id: 'tile_3', x: 3, y: 3, value: 8 },
+            // ],
+            // tempStep: 0,
             target: 1024 * Math.pow(2, (Size - 3)),
         };
     }
@@ -96,6 +97,7 @@ class Game extends Component {
                 ],
                 ...prevState.cells.slice(tile.x + 1),
             ],
+            ...(value && { tileCounter: (prevState.tileCounter + 1) }),
         }));
     }
 
@@ -123,8 +125,9 @@ class Game extends Component {
 
     addRandomTile = () => {
         if (this.cellsAvailable()) {
+            const { tileCounter } = this.state; 
             var value = Math.random() < 0.9 ? 2 : 4;
-            var tile = new Tile(this.randomAvailableCell(), value);
+            var tile = new Tile(this.randomAvailableCell(), value, (tileCounter + 1));
             this.insertTile(tile);
         }
     };
@@ -276,53 +279,8 @@ class Game extends Component {
 
     render () {
         const { Size, emit } = this.props;
-        const { /* cells, */ tempTiles, tempStep, score, difference, won, over, topscore, target } = this.state;
+        const { cells, /* tempTiles, tempStep, */ score, difference, won, over, topscore, target } = this.state;
         let tileContainer = [];
-            
-        // const addTile = (tile) => {
-        //     const position = tile.previousPosition || { x: tile.x, y: tile.y };
-        //     const positionClass = this.positionClass(position);
-        //     var classes = ["tile", "tile-" + tile.value, positionClass];
-    
-        //     if (tile.previousPosition) {
-        //         classes[2] = this.positionClass({ x: tile.x, y: tile.y });
-        //     }
-        //     else if (tile.mergedFrom) {
-        //         classes.push("tile-merged");
-        //         tile.mergedFrom.forEach((merged) => {
-        //             addTile(merged);
-        //         });
-        //     }
-        //     else {
-        //         classes.push("tile-new");
-        //     }
-    
-        //     tileContainer = [
-        //         ...tileContainer,
-        //         <div key={`tile-${tileContainer.length+1}`} className={classes.join(' ')}>{tile.value}</div>,
-        //     ];
-        // };
-
-        // cells.forEach((column) => {
-        //     column.forEach((cell) => {
-        //         if (cell) {
-        //             addTile(cell);
-        //         }
-        //     });
-        // });
-
-        const mapTile = (tile, position, index) => {
-            const maxSize = Size -1;
-            const map = [
-                { x: 0, y: 0 },
-                { x: maxSize, y: 0 },
-                { x: maxSize, y: maxSize },
-                { x: 0, y: maxSize },
-            ];
-            const relativeStep = (position + index) % 4; 
-            return { ...tile, x: map[relativeStep].x, y: map[relativeStep].y };
-        }
-
         const getStyle = (normalisedTile, size) => {
             const tileSize = getTileSize(size);
             const lineHeight = tileSize + 10;
@@ -338,19 +296,74 @@ class Game extends Component {
             };
         }
 
-        tileContainer = tempTiles.map((tile, i) => (
-            <div
-                key={tile.id}
-                className={[
-                    "tile",
-                    "tile-" + tile.value,
-                    // this.positionClass(mapTile(tile, tempStep, i)),
-                ].join(' ')}
-                style={getStyle(mapTile(tile, tempStep, i), Size)}
-            >
-                {tile.value}
-            </div>
-        ));
+        const addTile = (tile) => {
+            const position = tile.previousPosition || { x: tile.x, y: tile.y };
+            const positionClass = this.positionClass(position);
+            var classes = ["tile", "tile-" + tile.value, positionClass];
+    
+            if (tile.previousPosition) {
+                classes[2] = this.positionClass({ x: tile.x, y: tile.y });
+            }
+            else if (tile.mergedFrom) {
+                classes.push("tile-merged");
+                tile.mergedFrom.forEach((merged) => {
+                    addTile(merged);
+                });
+            }
+            else {
+                classes.push("tile-new");
+            }
+    
+            tileContainer = [
+                ...tileContainer,
+                // <div key={`tile-${tileContainer.length+1}`} className={classes.join(' ')}>{tile.value}</div>,
+                <div
+                    key={tile.id}
+                    className={[
+                        "tile",
+                        "tile-" + tile.value,
+                        // this.positionClass(mapTile(tile, tempStep, i)),
+                    ].join(' ')}
+                    style={getStyle(tile, Size)}
+                >
+                    {tile.value}
+                </div>,
+            ];
+        };
+
+        cells.forEach((column) => {
+            column.forEach((cell) => {
+                if (cell) {
+                    addTile(cell);
+                }
+            });
+        });
+
+        // const mapTile = (tile, position, index) => {
+        //     const maxSize = Size -1;
+        //     const map = [
+        //         { x: 0, y: 0 },
+        //         { x: maxSize, y: 0 },
+        //         { x: maxSize, y: maxSize },
+        //         { x: 0, y: maxSize },
+        //     ];
+        //     const relativeStep = (position + index) % 4; 
+        //     return { ...tile, x: map[relativeStep].x, y: map[relativeStep].y };
+        // }
+
+        // tileContainer = tempTiles.map((tile, i) => (
+        //     <div
+        //         key={tile.id}
+        //         className={[
+        //             "tile",
+        //             "tile-" + tile.value,
+        //             // this.positionClass(mapTile(tile, tempStep, i)),
+        //         ].join(' ')}
+        //         style={getStyle(mapTile(tile, tempStep, i), Size)}
+        //     >
+        //         {tile.value}
+        //     </div>
+        // ));
 
         return (
             <div className="container">

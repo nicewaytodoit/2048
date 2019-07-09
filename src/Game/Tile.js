@@ -1,5 +1,6 @@
 class Tile {
-    constructor(position, value) {
+    constructor(position, value, id = 0) {
+        this.id = id;
         this.x = position.x;
         this.y = position.y;
         this.value = value || 2;

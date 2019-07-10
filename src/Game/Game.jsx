@@ -14,8 +14,8 @@ class Game extends Component {
     constructor(props) {
         super(props);
         const { Size } = props;
+        this.tileCounter = 0;
         this.state = {
-            tileCounter: 0,
             cells: init(Size),
             score: 0,
             topscore: 0,
@@ -97,7 +97,6 @@ class Game extends Component {
                 ],
                 ...prevState.cells.slice(tile.x + 1),
             ],
-            ...(value && { tileCounter: (prevState.tileCounter + 1) }),
         }));
     }
 
@@ -123,11 +122,14 @@ class Game extends Component {
         }
     };
 
+    increaseTileCounter = () => {
+        return (this.tileCounter++);
+    }
+
     addRandomTile = () => {
         if (this.cellsAvailable()) {
-            const { tileCounter } = this.state; 
             var value = Math.random() < 0.9 ? 2 : 4;
-            var tile = new Tile(this.randomAvailableCell(), value, (tileCounter + 1));
+            var tile = new Tile(this.randomAvailableCell(), value, this.increaseTileCounter());
             this.insertTile(tile);
         }
     };
@@ -165,10 +167,10 @@ class Game extends Component {
                     const positions = this.findFarthestPosition(cell, vector);
                     const next = this.cellContent(positions.next);
                     if (next && next.value === tile.value && !next.mergedFrom) {
-                        const merged = new Tile(positions.next, tile.value * 2);
+                        const merged = new Tile(positions.next, tile.value * 2, tile.id);
                         merged.mergedFrom = [tile, next];
-                        this.insertTile(merged);
                         this.removeTile(tile);
+                        this.insertTile(merged);
                         tile.updatePosition(positions.next);
                         totalScore = totalScore + merged.value;
                         difference = difference + merged.value;

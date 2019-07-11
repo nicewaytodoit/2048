@@ -50,7 +50,8 @@
     - size of number in smallest tile *(2048 gettting out of the borders)
     - option page ...
     - find Buzz instructions / decorations
-    
+    - Android and React Native conversion ... deploying to Web/hosting and have it as part of company / portfolio
+    - Need for speed, making it in Svelte
 
 
 # Features

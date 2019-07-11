@@ -30,8 +30,8 @@ SelectControl.propTypes = {
 
 class App extends React.Component {
     state = {
-        GridSize: 4,
-        GameState: true,
+        GridSize: 0,
+        GameState: false,
     };
 
     ValueChange = (e) => {

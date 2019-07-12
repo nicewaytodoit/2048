@@ -1,5 +1,24 @@
 
 
+# v0.4 - New Feature List
+
+## 2019-07-11 
+  - code refactoring nicer/solid/decupling
+
+  - new features
+    - chooser nicer styles
+    - help page
+    - randomize number of tile in relation to size of available empty tiles, higher probability of more tiles with larger table
+    - number of morphing results or infinite in regards to size of table change instead of config files.
+    - size of number in smallest tile *(2048 gettting out of the borders)
+    - option page ...
+    - find Buzz instructions / decorations
+    - Android and React Native conversion ... deploying to Web/hosting and have it as part of company / portfolio
+    - Need for speed, making it in Svelte
+
+
+
+
 # Bug list 
 ## 2019-06-30 10:00
 + setup tiles not working
@@ -15,9 +34,9 @@
 + more tiles very slow
 + Update Differences in Score does not work 
 
-- Transition animation while moving tiles does not work
-  - in order to make it work I would need to, hande each Tile not rerender all
-  - styles are hard coded so if I would to increase size of the table this will not work
++ Transition animation while moving tiles does not work
+  + in order to make it work I would need to, hande each Tile not rerender all
+  + styles are hard coded so if I would to increase size of the table this will not work
 
 - https://keycode.info/ -> 32 is spacebar -> RESET -> HammerJS 
 
@@ -39,27 +58,12 @@
 + speed of this with lots of tiles ???
 
 
-## 2019-07-11
-  - code refactoring nicer/solid/decupling
-
-  - new features
-    - chooser nicer styles
-    - help page
-    - randomize number of tile in relation to size of available empty tiles, higher probability of more tiles with larger table
-    - number of morphing results or infinite in regards to size of table change instead of config files.
-    - size of number in smallest tile *(2048 gettting out of the borders)
-    - option page ...
-    - find Buzz instructions / decorations
-    - Android and React Native conversion ... deploying to Web/hosting and have it as part of company / portfolio
-    - Need for speed, making it in Svelte
-
-
 # Features
   + personal Best
   + fade by going up added score - animation
   + tile that is merged get slightly bigger 
   + [new game] reset button
-  - choosing your own size of table 
+  + choosing your own size of table 
 
 
 # Lessons Learn

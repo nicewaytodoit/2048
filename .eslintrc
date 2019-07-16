@@ -29,6 +29,7 @@
         "no-console": 0,
         "comma-dangle": [2, "always-multiline"],
         "no-unused-vars": "error",
+        "semi": ["error", "always"],
         "react/require-default-props": 0,
         "react/jsx-no-target-blank": [0, { "enforceDynamicLinks": "never" }],
         "react/jsx-one-expression-per-line": 0,

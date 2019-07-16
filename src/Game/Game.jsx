@@ -22,12 +22,6 @@ class Game extends Component {
             difference: 0,
             over: false,
             won: false,
-            // tempTiles: [
-            //     { id: 'tile_1', x: 0, y: 0, value: 2 },
-            //     { id: 'tile_2', x: 3, y: 0, value: 4 },
-            //     { id: 'tile_3', x: 3, y: 3, value: 8 },
-            // ],
-            // tempStep: 0,
             target: 1024 * Math.pow(2, (Size - 3)),
         };
     }
@@ -36,8 +30,6 @@ class Game extends Component {
         const { on } = this.props;
         on("move", this.move.bind(this));
         on("restart", this.restart.bind(this));
-        // console.log('will moung Start Tile');
-        
     }
     
     // Grid ---------------------------------------------
@@ -74,36 +66,17 @@ class Game extends Component {
     withinBounds = (position) => {
         const { Size } = this.props;
         return position.x >= 0 && position.x < Size && position.y >= 0 && position.y < Size;
-    }
+    };
 
     cellContent = (allcells, cell) => {
-        // console.log('cell content', allcells, cell);
         return (this.withinBounds(cell)) ? allcells[cell.x][cell.y] : null;
-    }
+    };
     
     cellOccupied = (allcells, cell) => !!this.cellContent(allcells, cell);
 
     cellAvailable = (allcells, cell) => !this.cellOccupied(allcells, cell);
 
-    // updateCellsState = (tile, value) => {
-    //     this.setState((prevState) => ({
-    //         cells: [
-    //             ...prevState.cells.slice(0, tile.x),
-    //             [
-    //                 ...prevState.cells[tile.x].slice(0, tile.y),
-    //                 value,
-    //                 ...prevState.cells[tile.x].slice(tile.y + 1),
-    //             ],
-    //             ...prevState.cells.slice(tile.x + 1),
-    //         ],
-    //     }));
-    // }
-
-    // insertTile = (tile) => this.updateCellsState(tile, tile);
-    
-    // removeTile = (tile) => this.updateCellsState(tile, null);
-
-    
+   
     // Game ---------------------------------------------
 
     restart = () => {
@@ -117,7 +90,6 @@ class Game extends Component {
         const cells = init(Size);
         for (var i = 0; i < startTiles; i++) {
             const tile = this.addRandomTile(cells, Size);
-            // console.log('---,--@', tile);
             if (tile) {
                 cells[tile.x][tile.y] = tile;
             }
@@ -133,11 +105,10 @@ class Game extends Component {
         if (this.cellsAvailable(allcells, size)) {
             var value = Math.random() < 0.9 ? 2 : 4;
             var tile = new Tile(this.randomAvailableCell(allcells, size), value, this.increaseTileCounter());
-            // this.insertTile(tile);
             return tile;
         }
         return null;
-    };
+    }
 
     prepareTiles = (allcells, size) => {
         this.eachCell(allcells, size, (x, y, tile) => {
@@ -146,13 +117,7 @@ class Game extends Component {
                 tile.savePosition();
             }
         });
-    };
-
-    // moveTile = (tile, cell) => {
-    //     this.updateCellsState(tile, null);
-    //     this.updateCellsState(cell, tile);
-    //     tile.updatePosition(cell);
-    // };
+    }
 
     move = (direction) => {
         const { Size } = this.props;
@@ -165,7 +130,6 @@ class Game extends Component {
         let difference = 0;
         const allcells = [ ...cells ];
         this.prepareTiles(allcells, Size);
-
         
         traversals.x.forEach((x) => {
             traversals.y.forEach((y) => {
@@ -177,9 +141,7 @@ class Game extends Component {
                     if (next && next.value === tile.value && !next.mergedFrom) {
                         const merged = new Tile(positions.next, tile.value * 2, this.increaseTileCounter()); // tile.id
                         merged.mergedFrom = true; // [tile, next];
-                        // this.removeTile(tile); 
                         allcells[tile.x][tile.y] = null; // remove tile
-                        // this.insertTile(merged);
                         allcells[merged.x][merged.y] = merged; // insert tile
                         tile.updatePosition(positions.next);
                         totalScore = totalScore + merged.value;
@@ -191,12 +153,8 @@ class Game extends Component {
                     }
                     else {
                         const cellF = positions.farthest;
-                        // this.moveTile(tile, positions.farthest);
-                        // this.updateCellsState(tile, null);
-                        // this.updateCellsState(cell, tile);
-                        // console.log(tile, cellF, '<<<<<<<<<<<<<<<<<<<<<<<<');
-                        allcells[tile.x][tile.y] = null;
-                        allcells[cellF.x][cellF.y] = tile;
+                        allcells[tile.x][tile.y] = null; // delete previous position
+                        allcells[cellF.x][cellF.y] = tile; // add new position
                         tile.updatePosition(cellF);
                     }
                     if (!this.positionsEqual(cell, tile)) {
@@ -212,7 +170,6 @@ class Game extends Component {
             allcells[tileNew.x][tileNew.y] = tileNew;
             movesAvailable = !!this.movesAvailable(allcells, Size);
         }
-        // console.log('Update move', allcells);
         this.setState(() => ({
             cells: allcells, // update cells after all calculations
             ...(moved && { score: totalScore, difference: difference, ...(totalScore > topscore && { topscore: totalScore }) }),
@@ -271,7 +228,6 @@ class Game extends Component {
                         const other = this.cellContent(allcells, cell);
 
                         if (other && other.value === tile.value) {
-                            // console.log('Merging:', tile, other);
                             return true; // These two tiles can be merged
                         }
                     }
@@ -282,7 +238,6 @@ class Game extends Component {
     };
 
     positionsEqual = (first, second) => first.x === second.x && first.y === second.y;
-
 
     // Actuator ----------------------------------------------------------------------------------------
     normalizePosition = (position) => ({ x: position.x + 1, y: position.y + 1 });
@@ -302,9 +257,7 @@ class Game extends Component {
 
     render () {
         const { Size, emit } = this.props;
-        const { cells, /* tempTiles, tempStep, */ score, difference, won, over, topscore, target } = this.state;
-        // const callBB = (acc, vv) => ([...acc, ...(vv ? [vv]: [])]);
-        // console.log('RENDER', cells.reduce((row, acc) => ([ ...acc, ...row.reduce(callBB,[])])), []);
+        const { cells, score, difference, won, over, topscore, target } = this.state;
 
         let tileContainer = [];
         const getStyle = (normalisedTile, size) => {
@@ -320,12 +273,9 @@ class Game extends Component {
                 top: `${normalisedTile.y * tileAndSpaceSize}px`,
                 fontSize: `${((55 * 4) / size)}px`,
             };
-        }
+        };
 
         const addTile = (tile) => {
-            // console.log('add tile', tile.mergedFrom);
-            // const position = tile.previousPosition || { x: tile.x, y: tile.y };
-            // const positionClass = this.positionClass(position);
             var classes = ["tile", "tile-" + tile.value]; // positionClass
     
             if (tile.previousPosition) {
@@ -333,9 +283,6 @@ class Game extends Component {
             }
             else if (tile.mergedFrom) {
                 classes.push("tile-merged");
-                // tile.mergedFrom.forEach((merged) => {
-                //     addTile(merged);
-                // });
             }
             else {
                 classes.push("tile-new");
@@ -343,14 +290,10 @@ class Game extends Component {
     
             tileContainer = [
                 ...tileContainer,
-                // <div key={`tile-${tileContainer.length+1}`} className={classes.join(' ')}>{tile.value}</div>,
                 <div
                     key={tile.id}
                     className={[
                         ...classes,
-                        // "tile",
-                        // "tile-" + tile.value,
-                        // this.positionClass(mapTile(tile, tempStep, i)),
                     ].join(' ')}
                     style={getStyle(tile, Size)}
                 >
@@ -359,43 +302,13 @@ class Game extends Component {
             ];
         };
 
-        // let counter = 0;
         cells.forEach((column) => {
             column.forEach((cell) => {
                 if (cell) {
-                    // console.log('Add', counter++, cell.id);
                     addTile(cell);
                 }
             });
         });
-
-        // const mapTile = (tile, position, index) => {
-        //     const maxSize = Size -1;
-        //     const map = [
-        //         { x: 0, y: 0 },
-        //         { x: maxSize, y: 0 },
-        //         { x: maxSize, y: maxSize },
-        //         { x: 0, y: maxSize },
-        //     ];
-        //     const relativeStep = (position + index) % 4; 
-        //     return { ...tile, x: map[relativeStep].x, y: map[relativeStep].y };
-        // }
-
-        // tileContainer = tempTiles.map((tile, i) => (
-        //     <div
-        //         key={tile.id}
-        //         className={[
-        //             "tile",
-        //             "tile-" + tile.value,
-        //             // this.positionClass(mapTile(tile, tempStep, i)),
-        //         ].join(' ')}
-        //         style={getStyle(mapTile(tile, tempStep, i), Size)}
-        //     >
-        //         {tile.value}
-        //     </div>
-        // ));
-
-        // console.log('Render Controls===', tileContainer);
 
         return (
             <div className="container">

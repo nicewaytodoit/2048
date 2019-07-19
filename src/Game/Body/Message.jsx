@@ -14,7 +14,7 @@ const Message = ({ message = {} , emit = emptyFn }) => {
         return {
             type: won ? "game-won" : "game-over",
             text: won ? "You win!" : "Game over!",
-        }
+        };
     };
 
     // clearMessage = () => { // TODO: just set state };

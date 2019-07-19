@@ -22,7 +22,7 @@ const Grid = (props) => {
             ))}
         </div>
     );
-}
+};
 
 Grid.propTypes = {
     Size: PropTypes.number.isRequired,

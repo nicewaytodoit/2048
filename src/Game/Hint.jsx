@@ -26,6 +26,6 @@ const Hint = ({ emit, target }) => {
 Hint.propTypes = {
     emit: PropTypes.func.isRequired,
     target: PropTypes.number.isRequired,
-}
+};
 
 export default Hint;

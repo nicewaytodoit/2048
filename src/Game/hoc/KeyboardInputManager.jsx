@@ -33,7 +33,7 @@ const KeyboardInputManager = (WrappedComponent) => {
                     },
                 };
                 return res;
-            })
+            });
         };
         
         emit = (event, data) => {

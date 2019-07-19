@@ -2,6 +2,12 @@
 
 # v0.4 - New Feature List
 
+## 2019-07-17
+  + Type script conversion
+    npm install --save @types/react @types/react-dom
+    
+
+
 ## 2019-07-11 
   - code refactoring nicer/solid/decupling
 

@@ -1,6 +1,6 @@
-import React from 'react';
+import * as React from 'react';
 
-const Help = () => {
+const Help: React.SFC<{}> = () => {
     return (
         <p className="game-explanation">
             <strong className="important">How to play:</strong> Use your <strong>arrow keys</strong>

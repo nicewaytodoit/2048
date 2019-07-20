@@ -1,7 +1,13 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+/* eslint-disable react/prop-types */
+import * as React from 'react';
 
-const Hint = ({ emit, target }) => {
+interface iHint {
+    emit(command: string): void;
+    target: number;
+}
+
+const Hint: React.SFC<iHint> = (props) => {
+    const { emit, target } = props;
     const restart = (event) => {
         event.preventDefault();
         emit("restart");
@@ -14,18 +20,13 @@ const Hint = ({ emit, target }) => {
                 onClick={restart}
                 onKeyPress={restart}
                 role="button"
-                tabIndex="0"
+                tabIndex={0}
                 href="#retry"
             >
                 New Game
             </a>
         </p>
     );
-};
-
-Hint.propTypes = {
-    emit: PropTypes.func.isRequired,
-    target: PropTypes.number.isRequired,
 };
 
 export default Hint;

@@ -1,5 +1,4 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import * as React from 'react';
 import Body from './Body/Body';
 import Header from './Header';
 import { Help, Divider, Credits } from './Info';
@@ -9,12 +8,34 @@ import KeyboardInputManager from './hoc/KeyboardInputManager';
 import './main.scss';
 
 const init = (size) => Array(size).fill(null).map(() => Array(size).fill(null));
+type iTile = {
+    x: number;
+    y: number;
+};
+type iTraversals = {
+    x: number[];
+    y: number[];
+};
+type myProps = {
+    GridSize: number,
+    on(name: string, obj: any): void,
+    emit(command: string): void,
+};
+type myState = {
+    cells: Array<Object>,
+    score: number;
+    topscore: number;
+    difference: number;
+    over: Boolean;
+    won: Boolean;
+    target: number;
+};
 
-class Game extends Component {
+
+class Game extends React.Component<myProps, myState> {
+    tileCounter: number = 0;
     constructor(props) {
         super(props);
-        const { Size } = props;
-        this.tileCounter = 0;
         this.state = {
             cells: this.addStartTiles(),
             score: 0,
@@ -22,7 +43,7 @@ class Game extends Component {
             difference: 0,
             over: false,
             won: false,
-            target: 1024 * Math.pow(2, (Size - 3)),
+            target: 1024 * Math.pow(2, (props.GridSize - 3)),
         };
     }
 
@@ -42,10 +63,10 @@ class Game extends Component {
     };
 
     availableCells = (allcells, size) => {
-        let cells = [];
-        this.eachCell(allcells, size, (x, y, tile) => {
+        let cells:iTile[] = [];
+        this.eachCell(allcells, size, (xx: number, yy: number, tile: Object) => {
             if (!tile) {
-                cells.push({ x: x, y: y });
+                cells.push({ x: xx, y: yy });
             }
         });
         return cells;
@@ -64,8 +85,8 @@ class Game extends Component {
     };
 
     withinBounds = (position) => {
-        const { Size } = this.props;
-        return position.x >= 0 && position.x < Size && position.y >= 0 && position.y < Size;
+        const { GridSize } = this.props;
+        return position.x >= 0 && position.x < GridSize && position.y >= 0 && position.y < GridSize;
     };
 
     cellContent = (allcells, cell) => {
@@ -86,10 +107,10 @@ class Game extends Component {
 
     addStartTiles = () => {
         const startTiles = 4;
-        const { Size } = this.props;
-        const cells = init(Size);
+        const { GridSize } = this.props;
+        const cells = init(GridSize);
         for (var i = 0; i < startTiles; i++) {
-            const tile = this.addRandomTile(cells, Size);
+            const tile = this.addRandomTile(cells, GridSize);
             if (tile) {
                 cells[tile.x][tile.y] = tile;
             }
@@ -101,7 +122,7 @@ class Game extends Component {
         return (this.tileCounter++);
     }
 
-    addRandomTile = (allcells, size) => {
+    addRandomTile = (allcells, size): Tile | null => {
         if (this.cellsAvailable(allcells, size)) {
             var value = Math.random() < 0.9 ? 2 : 4;
             var tile = new Tile(this.randomAvailableCell(allcells, size), value, this.increaseTileCounter());
@@ -120,7 +141,7 @@ class Game extends Component {
     }
 
     move = (direction) => {
-        const { Size } = this.props;
+        const { GridSize } = this.props;
         const { over, won, score, topscore, target, cells } = this.state;
         if (over || won) return; // Don't do anything if the game's over
         const vector = this.getVector(direction);
@@ -129,7 +150,7 @@ class Game extends Component {
         let totalScore = score;
         let difference = 0;
         const allcells = [ ...cells ];
-        this.prepareTiles(allcells, Size);
+        this.prepareTiles(allcells, GridSize);
         
         traversals.x.forEach((x) => {
             traversals.y.forEach((y) => {
@@ -166,15 +187,21 @@ class Game extends Component {
 
         let movesAvailable = true;
         if (moved) {
-            const tileNew = this.addRandomTile(allcells, Size);
-            allcells[tileNew.x][tileNew.y] = tileNew;
-            movesAvailable = !!this.movesAvailable(allcells, Size);
+            const tileNew = this.addRandomTile(allcells, GridSize);
+            if (tileNew)
+                allcells[tileNew.x][tileNew.y] = tileNew;
+            movesAvailable = !!this.movesAvailable(allcells, GridSize);
         }
-        this.setState(() => ({
-            cells: allcells, // update cells after all calculations
-            ...(moved && { score: totalScore, difference: difference, ...(totalScore > topscore && { topscore: totalScore }) }),
-            ...(!movesAvailable && { over: true }), // game over
-        }));
+        this.setState(() => {
+            const updateCells = {
+                cells: allcells, // update cells after all calculations
+                ...(moved && { score: totalScore, difference: difference, ...(totalScore > topscore && { topscore: totalScore }) }),
+                ...(!movesAvailable && { over: true }), // game over
+            };
+            return {
+                ...updateCells,
+            };
+        });
     };
 
     getVector = (direction) => {
@@ -187,10 +214,10 @@ class Game extends Component {
         return map[direction];
     };
 
-    buildTraversals = (vector) => {
-        const { Size } = this.props;
-        const traversals = { x: [], y: [] };
-        for (let pos = 0; pos < Size; pos++) {
+    buildTraversals = (vector): iTraversals  => {
+        const { GridSize } = this.props;
+        const traversals: iTraversals = { x: [], y: [] };
+        for (let pos = 0; pos < GridSize; pos++) {
             traversals.x.push(pos);
             traversals.y.push(pos);
         }
@@ -247,24 +274,23 @@ class Game extends Component {
         return "tile-position-" + position.x + "-" + position.y;
     };
 
-    role = () => {
-        this.setState((prev) => {
-            const step = (prev.tempStep + 1) > 3 ? 0 : prev.tempStep + 1; 
-            return { tempStep: step };
-        });
-    }
-
+    // role = () => {
+    //     this.setState((prev: myState) => {
+    //         const step = (prev.tempStep + 1) > 3 ? 0 : prev.tempStep + 1; 
+    //         return { tempStep: step };
+    //     });
+    // }
 
     render () {
-        const { Size, emit } = this.props;
+        const { GridSize, emit } = this.props;
         const { cells, score, difference, won, over, topscore, target } = this.state;
 
-        let tileContainer = [];
+        let tileContainer: Element[] = [];
         const getStyle = (normalisedTile, size) => {
             const tileSize = getTileSize(size);
             const lineHeight = tileSize + 10;
             const tileAndSpaceSize = tileSize + 15;
-            return {
+            const styles: React.CSSProperties = {
                 position: 'absolute',
                 width: `${tileSize}px`,
                 height: `${tileSize}px`,
@@ -273,6 +299,7 @@ class Game extends Component {
                 top: `${normalisedTile.y * tileAndSpaceSize}px`,
                 fontSize: `${((55 * 4) / size)}px`,
             };
+            return styles;
         };
 
         const addTile = (tile) => {
@@ -295,14 +322,14 @@ class Game extends Component {
                     className={[
                         ...classes,
                     ].join(' ')}
-                    style={getStyle(tile, Size)}
+                    style={getStyle(tile, GridSize)}
                 >
                     {tile.value}
                 </div>,
             ];
         };
 
-        cells.forEach((column) => {
+        cells.forEach((column:[]) => {
             column.forEach((cell) => {
                 if (cell) {
                     addTile(cell);
@@ -314,9 +341,9 @@ class Game extends Component {
             <div className="container">
                 <Header score={score} difference={difference} topscore={topscore} />
                 <Hint emit={emit} target={target} />
-                <button type="button" onClick={this.role}>Roll Those</button>
+                {/* <button type="button" onClick={this.role}>Roll Those</button> */}
                 <Body 
-                    Size={Size} 
+                    GridSize={GridSize} 
                     tiles={tileContainer} 
                     message={{ won, over }} 
                     emit={emit}
@@ -328,11 +355,5 @@ class Game extends Component {
         );
     }
 }
-
-Game.propTypes = {
-    Size: PropTypes.number.isRequired,
-    on: PropTypes.func,
-    emit: PropTypes.func,
-};
 
 export default KeyboardInputManager(Game);

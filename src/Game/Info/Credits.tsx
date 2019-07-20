@@ -1,6 +1,6 @@
-import React from 'react';
+import * as React from 'react';
 
-const Credits = () => {
+const Credits: React.SFC<{}> = () => {
     return (
         <p>
             React variation of 1024 created by 

@@ -1,10 +1,12 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+/* eslint-disable react/prop-types */
+import * as React from 'react';
 import Row from './Row';
 import Cell from './Cell';
 import { getTileSize } from '../Tile';
 
-const Grid = (props) => {
+interface iGrid { Size: number; }
+
+const Grid: React.SFC<iGrid> = (props) => {
     const { Size } = props;
     const grid = Array(Size).fill(1);
     const tileSize = getTileSize(Size);
@@ -22,10 +24,6 @@ const Grid = (props) => {
             ))}
         </div>
     );
-};
-
-Grid.propTypes = {
-    Size: PropTypes.number.isRequired,
 };
 
 export default Grid;

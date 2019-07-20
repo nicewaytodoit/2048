@@ -1,5 +1,4 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import * as React from 'react';
 import Hammer from 'hammerjs';
 
 const map = {
@@ -13,8 +12,16 @@ const map = {
     72: 3,
 };
 
-const KeyboardInputManager = (WrappedComponent) => {
-    class HOCKeyboard extends React.Component {
+interface iHOCKeyboard { extraProp: string };
+
+export interface InjectedCounterProps {
+    on(name: string, obj: any): void;
+    emit(command: string): void;
+}
+
+const KeyboardInputManager = <P extends InjectedCounterProps>(WrappedComponent: React.ComponentType<P>) => {
+
+    class HOCKeyboard extends React.Component<P & iHOCKeyboard, { events: Object }> {
         state = {
             events: {},
         };
@@ -86,13 +93,15 @@ const KeyboardInputManager = (WrappedComponent) => {
 
         render() {
             const { extraProp, ...passThroughProps } = this.props;
-            return <WrappedComponent {...passThroughProps} on={this.on} emit={this.emit} />;
+            return (
+                <WrappedComponent
+                        {...passThroughProps}
+                        on={this.on}
+                        emit={this.emit}
+                />
+            );
         }
     }
-
-    HOCKeyboard.propTypes = {
-        extraProp: PropTypes.string,
-    };
 
     return HOCKeyboard;
 };

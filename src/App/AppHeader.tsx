@@ -1,11 +1,12 @@
-import React from 'react';
+import * as React from 'react';
+import './App.css';
 import logo from '../assets/logo.svg';
 
 const AppHeader = () => {
     return (
         <header className="App-header">
             <img src={logo} className="App-logo" alt="logo" />
-            <h1>Hello World!!!</h1>
+            <h1>Hello World !?! </h1>
             <p>
                 Edit <code>src/App.js</code> and save to reload.
             </p>

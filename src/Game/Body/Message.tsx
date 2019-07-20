@@ -1,10 +1,18 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+/* eslint-disable react/prop-types */
+import * as React from 'react';
+// const emptyFn = () => ({});
 
-const emptyFn = () => ({});
+export interface ioMessage {
+    over: Boolean;
+    won: Boolean;
+}
+interface iMessage {
+    emit(command: string): void;
+    message: ioMessage;
+}
 
-const Message = ({ message = {} , emit = emptyFn }) => {
-
+const Message: React.SFC<iMessage> = (props) => {
+    const { message, emit} = props;
     const restart = (event) => {
         event.preventDefault();
         emit("restart");
@@ -34,7 +42,7 @@ const Message = ({ message = {} , emit = emptyFn }) => {
                     onClick={restart}
                     onKeyPress={restart}
                     role="button"
-                    tabIndex="0"
+                    tabIndex={0}
                     href="#retry"
                 >
                     Try again
@@ -42,11 +50,6 @@ const Message = ({ message = {} , emit = emptyFn }) => {
             </div>
         </div>
     );
-};
-
-Message.propTypes = {
-    emit: PropTypes.func,
-    message: PropTypes.shape({ over: PropTypes.bool, won: PropTypes.bool }),
 };
 
 export default Message;

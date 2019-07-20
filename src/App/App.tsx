@@ -1,8 +1,7 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+/* eslint-disable react/prop-types, react/destructuring-assignment */
+import * as React from 'react';
 import './App.css';
 import Game from '../Game/Game';
-// import AppHeader from './AppHeader';
 
 const sizes = [
     { text:'Small', value: 3 },
@@ -16,24 +15,35 @@ const sizes = [
     { text:'Why man, why?!', value: 11 },
 ];
 
-const SelectControl = ({ GridSize, HandleChange }) => (
-    <select selected={GridSize} onChange={HandleChange}>
+interface iSelectControl {
+    GridSize: number;
+    HandleChange(e: React.KeyboardEvent | React.MouseEvent | React.FormEvent<HTMLSelectElement>): void;
+}
+
+const SelectControl: React.SFC<iSelectControl> = (props) => (
+    <select onChange={props.HandleChange}>
         <option key="k-0" value={0}>Please Select</option>
-        {sizes.map((item) =><option key={`k-${item.value}-${item.value}`} value={item.value}>{item.text} - {item.value} x {item.value}</option>)}
+        {sizes.map((item) => {
+            const optionProps = {
+                value:item.value,
+                ...(item.value === props.GridSize && { selected: true }),
+            };
+            return <option key={`k-${item.value}-${item.value}`} {...optionProps}>{item.text} - {item.value} x {item.value}</option>;
+        })}
     </select>
 );
 
-SelectControl.propTypes = {
-    GridSize: PropTypes.number.isRequired,
-    HandleChange: PropTypes.func.isRequired,
+type MyProps = { };
+type MyState = {
+    GridSize: number,
+    GameState: Boolean,
 };
 
-class App extends React.Component {
+class App extends React.Component<MyProps, MyState> {
     state = {
         GridSize: 0,
         GameState: false,
     };
-
     ValueChange = (e) => {
         const val = e.target.value;
         this.setState(() => ({ GridSize: Number.parseInt(val)}));
@@ -48,9 +58,6 @@ class App extends React.Component {
 
     render() {
         const { GridSize, GameState } = this.state;
-
-
-
         return (
             <div className="App">
                 {!GameState && (
@@ -62,7 +69,7 @@ class App extends React.Component {
                         <button type="button">Leaderboard</button>
                     </div>
                 )}
-                {GameState && <Game Size={GridSize} />}
+                {GameState && <Game GridSize={GridSize} />}
             </div>
         );
     }

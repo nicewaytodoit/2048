@@ -1,4 +1,4 @@
-/* eslint-disable react/prop-types */
+/* eslint-disable react/prop-types, no-undef */
 import * as React from 'react';
 
 interface iRow{

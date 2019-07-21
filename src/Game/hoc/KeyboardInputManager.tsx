@@ -26,10 +26,9 @@ type myState = {
 // ComponentType = React.FunctionComponent<P> | React.ClassComponent<P>,
 const KeyboardInputManager = <P extends InjectedCounterProps>(WrappedComponent: React.ComponentClass<P>)
     : React.ComponentClass<P> => {
-    const test = {};
-    return class HOCKeyboard extends React.Component<P, myState> {
+    class HOCKeyboard extends React.Component<P, myState> {
         state = {
-            events: test,
+            events: {},
         };
         on = (event, callback) => {
             const cb = callback;
@@ -92,6 +91,8 @@ const KeyboardInputManager = <P extends InjectedCounterProps>(WrappedComponent: 
             return (<WrappedComponent {...this.props} on={this.on} emit={this.emit} />);
         }
     };
+
+    return HOCKeyboard;
 }
 
 export default KeyboardInputManager;

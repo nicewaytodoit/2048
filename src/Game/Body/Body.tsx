@@ -6,7 +6,7 @@ import Message, { ioMessage } from './Message';
 interface iBody {
     GridSize: number;
     message: ioMessage;
-    tiles: Array<React.ReactNode | React.ReactChild | React.ReactElement>;
+    tiles: Array<React.ReactNode | React.ReactChild | React.ReactElement | React.ElementType>;
     emit(command: string): void;
 }
 
@@ -16,7 +16,7 @@ const Body: React.SFC<iBody> = (props) => {
         <div className="game-container">
             <Message message={message} emit={emit} />
 
-            <Grid Size={GridSize} />
+            <Grid GridSize={GridSize} />
 
             <div className="tile-container">
                 {tiles}    

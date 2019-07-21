@@ -90,9 +90,9 @@ const KeyboardInputManager = <P extends InjectedCounterProps>(WrappedComponent: 
             // const { extraProp, ...passThroughProps } = this.props;
             return (<WrappedComponent {...this.props} on={this.on} emit={this.emit} />);
         }
-    };
+    }
 
     return HOCKeyboard;
-}
+};
 
 export default KeyboardInputManager;

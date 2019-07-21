@@ -1,4 +1,4 @@
-/* eslint-disable react/prop-types */
+/* eslint-disable react/prop-types, no-unused-vars */
 import * as React from 'react';
 import Grid from './Grid';
 import Message, { ioMessage } from './Message';

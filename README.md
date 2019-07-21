@@ -2,6 +2,10 @@
 
 # v0.4 - New Feature List
 
+## Error List 
+- Line 1:  Definition for rule 'no-object-literal-type-assertion' was not found  no-object-literal-type-assertio
+
+
 ## 2019-07-17
   + Type script conversion
     npm install --save @types/react @types/react-dom

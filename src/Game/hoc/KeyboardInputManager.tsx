@@ -12,29 +12,38 @@ const map = {
     72: 3,
 };
 
-interface iHOCKeyboard { extraProp: string };
+// interface iHOCKeyboard { extraProp: string };
 
 export interface InjectedCounterProps {
     on(name: string, obj: any): void;
     emit(command: string): void;
 }
 
-const KeyboardInputManager = <P extends InjectedCounterProps>(WrappedComponent: React.ComponentType<P>) => {
+type myState = {
+    events: any;
+}
 
-    class HOCKeyboard extends React.Component<P & iHOCKeyboard, { events: Object }> {
+// ComponentType = React.FunctionComponent<P> | React.ClassComponent<P>,
+const KeyboardInputManager = <P extends InjectedCounterProps>(WrappedComponent: React.ComponentClass<P>)
+    : React.ComponentClass<P> => {
+    // type State = {
+    //     username: string,
+    //     password: string
+    // };
+    // type StateKeys = keyof State;
+    return class HOCKeyboard extends React.Component<P, myState> {
         state = {
             events: {},
         };
-
         on = (event, callback) => {
             const cb = callback;
             this.setState((prevState) => {
                 const { events: prevEvents } = prevState;
-                const res = { 
+                const res = {
                     events: {
                         ...prevEvents,
                         [event]: [
-                            ...(prevEvents[event] ? prevEvents[event]: []),
+                            ...(prevEvents[event] ? prevEvents[event] : []),
                             cb,
                         ],
                     },
@@ -42,7 +51,9 @@ const KeyboardInputManager = <P extends InjectedCounterProps>(WrappedComponent: 
                 return res;
             });
         };
-        
+
+        // dynSetState = (key: StateKeys, value: string) => this.setState({ [key]: value } as Pick<State, keyof State>);
+
         emit = (event, data) => {
             const { events } = this.state;
             const callbacks = events[event];
@@ -52,12 +63,10 @@ const KeyboardInputManager = <P extends InjectedCounterProps>(WrappedComponent: 
                 });
             }
         };
-
         gesture = () => {
             const gestures = [Hammer.DIRECTION_UP, Hammer.DIRECTION_RIGHT, Hammer.DIRECTION_DOWN, Hammer.DIRECTION_LEFT];
             const gameContainer = document.getElementsByClassName("game-container")[0];
             const handler = Hammer(gameContainer, { drag_block_horizontal: true, drag_block_vertical: true });
-        
             handler.on('swipe', (event) => {
                 event.gesture.preventDefault();
                 const mapped = gestures.indexOf(event.gesture.direction);
@@ -66,11 +75,9 @@ const KeyboardInputManager = <P extends InjectedCounterProps>(WrappedComponent: 
                 }
             });
         }
-
         keyHandling = (event) => {
             const modifiers = event.altKey || event.ctrlKey || event.metaKey || event.shiftKey;
             const mapped = map[event.which];
-
             if (!modifiers) {
                 if (mapped !== undefined) {
                     event.preventDefault();
@@ -82,43 +89,30 @@ const KeyboardInputManager = <P extends InjectedCounterProps>(WrappedComponent: 
                 }
             }
         };
-
         componentDidMount = () => {
             document.addEventListener('keydown', this.keyHandling);
         }
-
         componentWillUnmount = () => {
             window.removeEventListener('keydown', this.keyHandling);
         }
-
         render() {
-            const { extraProp, ...passThroughProps } = this.props;
-            return (
-                <WrappedComponent
-                        {...passThroughProps}
-                        on={this.on}
-                        emit={this.emit}
-                />
-            );
+            // const { extraProp, ...passThroughProps } = this.props;
+            return (<WrappedComponent {...this.props} on={this.on} emit={this.emit} />);
         }
-    }
-
-    return HOCKeyboard;
-};
-
-export default KeyboardInputManager;
+    };
+}
+// return HOCKeyboard;
+// };
 
 // componentDidMount() {
 //     this.hammer = new Hammer(this.domElement);
 //     updateHammer(this.hammer, this.props);
 // }
-
 // componentDidUpdate() {
 //     if (this.hammer) {
 //         updateHammer(this.hammer, this.props);
 //     }
 // }
-
 // componentWillUnmount() {
 //     if (this.hammer) {
 //         this.hammer.stop();
@@ -126,3 +120,8 @@ export default KeyboardInputManager;
 //     }
 //     this.hammer = null;
 // }
+// problem statement 
+// - I need to add extra property I can omit in HOC some text, comment, calculation
+// 
+
+export default KeyboardInputManager;

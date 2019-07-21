@@ -6,7 +6,7 @@ import Message, { ioMessage } from './Message';
 interface iBody {
     GridSize: number;
     message: ioMessage;
-    tiles: Element[];
+    tiles: Array<React.ReactNode | React.ReactChild | React.ReactElement>;
     emit(command: string): void;
 }
 

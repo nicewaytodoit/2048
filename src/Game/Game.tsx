@@ -22,12 +22,12 @@ type myProps = {
     emit(command: string): void,
 };
 type myState = {
-    cells: Array<Object>,
+    cells: Array<any>,
     score: number;
     topscore: number;
     difference: number;
-    over: Boolean;
-    won: Boolean;
+    over: boolean;
+    won: boolean;
     target: number;
 };
 
@@ -149,7 +149,7 @@ class Game extends React.Component<myProps, myState> {
         let moved = false;
         let totalScore = score;
         let difference = 0;
-        const allcells = [ ...cells ];
+        const allcells: Array<any> = [ ...cells ];
         this.prepareTiles(allcells, GridSize);
         
         traversals.x.forEach((x) => {
@@ -192,8 +192,9 @@ class Game extends React.Component<myProps, myState> {
                 allcells[tileNew.x][tileNew.y] = tileNew;
             movesAvailable = !!this.movesAvailable(allcells, GridSize);
         }
-        this.setState(() => {
+        this.setState((prevState) => {
             const updateCells = {
+                ...prevState,
                 cells: allcells, // update cells after all calculations
                 ...(moved && { score: totalScore, difference: difference, ...(totalScore > topscore && { topscore: totalScore }) }),
                 ...(!movesAvailable && { over: true }), // game over
@@ -284,8 +285,6 @@ class Game extends React.Component<myProps, myState> {
     render () {
         const { GridSize, emit } = this.props;
         const { cells, score, difference, won, over, topscore, target } = this.state;
-
-        let tileContainer: Element[] = [];
         const getStyle = (normalisedTile, size) => {
             const tileSize = getTileSize(size);
             const lineHeight = tileSize + 10;
@@ -301,7 +300,8 @@ class Game extends React.Component<myProps, myState> {
             };
             return styles;
         };
-
+        
+        let tileContainer: Array<React.ReactNode | React.ReactChild | React.ReactElement> = [];
         const addTile = (tile) => {
             var classes = ["tile", "tile-" + tile.value]; // positionClass
     

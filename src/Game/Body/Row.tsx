@@ -2,7 +2,7 @@
 import * as React from 'react';
 
 interface iRow{
-    children: Element[] | Element,
+    children: JSX.Element[] | JSX.Element,
 }
 
 const Row: React.SFC<iRow>  = (props) => {

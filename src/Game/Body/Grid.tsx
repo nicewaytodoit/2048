@@ -1,4 +1,4 @@
-/* eslint-disable react/prop-types, no-undef */
+/* eslint-disable no-undef */
 import * as React from 'react';
 import Row from './Row';
 import Cell from './Cell';

@@ -18,6 +18,7 @@
   - new features
     - chooser nicer styles
     - help page
+    
     - randomize number of tile in relation to size of available empty tiles, higher probability of more tiles with larger table
     - number of morphing results or infinite in regards to size of table change instead of config files.
     - size of number in smallest tile *(2048 gettting out of the borders)

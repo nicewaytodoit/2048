@@ -1,4 +1,4 @@
-/* eslint-disable react/prop-types, react/destructuring-assignment */
+/* eslint-disable react/destructuring-assignment */
 import * as React from 'react';
 import './App.css';
 import Game from '../Game/Game';

@@ -96,3 +96,23 @@ const KeyboardInputManager = <P extends InjectedCounterProps>(WrappedComponent: 
 };
 
 export default KeyboardInputManager;
+
+// componentDidMount() {
+//     this.hammer = new Hammer(this.domElement);
+//     updateHammer(this.hammer, this.props);
+// }
+// componentDidUpdate() {
+//     if (this.hammer) {
+//         updateHammer(this.hammer, this.props);
+//     }
+// }
+// componentWillUnmount() {
+//     if (this.hammer) {
+//         this.hammer.stop();
+//         this.hammer.destroy();
+//     }
+//     this.hammer = null;
+// }
+// problem statement 
+// - I need to add extra property I can omit in HOC some text, comment, calculation
+// 

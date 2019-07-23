@@ -4,15 +4,15 @@ import './App.css';
 import Game from '../Game/Game';
 
 const sizes = [
-    { text:'Small', value: 3 },
-    { text:'Normal', value: 4 },
-    { text:'Big', value: 5 },
-    { text:'Bigger', value: 6 },
-    { text:'Very Big', value: 7 },
-    { text:'Large', value: 8 },
-    { text:'Larger', value: 9 },
-    { text:'Very Large', value: 10 },
-    { text:'Why man, why?!', value: 11 },
+    { text: 'Small', value: 3 },
+    { text: 'Normal', value: 4 },
+    { text: 'Big', value: 5 },
+    { text: 'Bigger', value: 6 },
+    { text: 'Very Big', value: 7 },
+    { text: 'Large', value: 8 },
+    { text: 'Larger', value: 9 },
+    { text: 'Very Large', value: 10 },
+    { text: 'Why man, why?!', value: 11 },
 ];
 
 interface iSelectControl {
@@ -25,7 +25,7 @@ const SelectControl: React.SFC<iSelectControl> = (props) => (
         <option key="k-0" value={0}>Please Select</option>
         {sizes.map((item) => {
             const optionProps = {
-                value:item.value,
+                value: item.value,
                 ...(item.value === props.GridSize && { selected: true }),
             };
             return <option key={`k-${item.value}-${item.value}`} {...optionProps}>{item.text} - {item.value} x {item.value}</option>;
@@ -33,7 +33,7 @@ const SelectControl: React.SFC<iSelectControl> = (props) => (
     </select>
 );
 
-type MyProps = { };
+type MyProps = {};
 type MyState = {
     GridSize: number,
     GameState: Boolean,
@@ -46,9 +46,9 @@ class App extends React.Component<MyProps, MyState> {
     };
     ValueChange = (e) => {
         const val = e.target.value;
-        this.setState(() => ({ GridSize: Number.parseInt(val)}));
+        this.setState(() => ({ GridSize: Number.parseInt(val) }));
     }
-    
+
     StartGame = () => {
         this.setState((prev) => {
             const state = !!prev.GridSize;
@@ -70,6 +70,14 @@ class App extends React.Component<MyProps, MyState> {
                     </div>
                 )}
                 {GameState && <Game GridSize={GridSize} />}
+                <div className="Panel">
+                    <div className="Hole" />
+                </div>
+                <div className="under_scroll">
+                    <p>This is some div that needs</p>
+                    <p>To be scrolle</p>
+                    <p>several times</p>
+                </div>
             </div>
         );
     }

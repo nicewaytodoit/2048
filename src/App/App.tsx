@@ -33,6 +33,45 @@ const SelectControl: React.SFC<iSelectControl> = (props) => (
     </select>
 );
 
+const ChooserControl: React.SFC<iSelectControl> = (props) => {
+    const [index, setIndex] = React.useState<number>(8);
+    const moveRight = () => {
+        setIndex((index+1) % 1);
+    };
+    const moveLeft = () => {
+        setIndex((index-1) % 1);
+    };
+    const item = sizes[index]; 
+    return (
+        <div className="Chooser">
+            <div className="ChooserWindow">
+                <div>
+                    <div className="left" onClick={moveLeft} onKeyPress={moveLeft} role="button" tabIndex={-1} />
+                </div>
+                <div className="TRansparent" />
+                <div>
+                    <div className="right" onClick={moveRight} onKeyPress={moveRight} role="button" tabIndex={-1} />
+                </div>
+            </div>
+            <div className="Content" key={`k-${item.value}-${item.value}`}>
+                <div>PIXTURE XXX</div>
+                <div>{item.text} - {item.value} x {item.value}</div>   
+            </div>
+            <div onClick={props.HandleChange} onKeyPress={props.HandleChange} role="button" tabIndex={0}>Choose</div>
+        </div>
+    // <select onChange={props.HandleChange}>
+    //     <option key="k-0" value={0}>Please Select</option>
+    //     {sizes.map((item) => {
+    //         const optionProps = {
+    //             value: item.value,
+    //             ...(item.value === props.GridSize && { selected: true }),
+    //         };
+    //         return <option key={`k-${item.value}-${item.value}`} {...optionProps}>{item.text} - {item.value} x {item.value}</option>;
+    //     })}
+    // </select>
+    );
+};
+
 type MyProps = {};
 type MyState = {
     GridSize: number,
@@ -65,6 +104,7 @@ class App extends React.Component<MyProps, MyState> {
                         <span> ( ? ) </span>
                         <span> Settings </span>
                         <SelectControl GridSize={GridSize} HandleChange={this.ValueChange} />
+                        <ChooserControl GridSize={GridSize} HandleChange={this.ValueChange} />
                         <button type="button" onClick={this.StartGame}>Start Game</button>
                         <button type="button">Leaderboard</button>
                     </div>

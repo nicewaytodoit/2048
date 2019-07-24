@@ -16,7 +16,8 @@
   - code refactoring nicer/solid/decupling
 
   - new features
-    - chooser nicer styles
+    - chooser nicer styles (Game image + see trought div + scroll on arrows)
+    - Font resiz per number per tile if number larger ih has to fit tile.
     - help page
     
     - randomize number of tile in relation to size of available empty tiles, higher probability of more tiles with larger table
@@ -26,7 +27,7 @@
     - find Buzz instructions / decorations
     - Android and React Native conversion ... deploying to Web/hosting and have it as part of company / portfolio
     - Need for speed, making it in Svelte
-
+     
 
 
 

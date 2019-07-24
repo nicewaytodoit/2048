@@ -18,7 +18,8 @@
         }
     },
     "plugins": [
-        "react"
+        "react",
+        "react-hooks"
     ],
     "env": {
         "browser": true,
@@ -26,6 +27,7 @@
         "jest": true
     },
     "rules": {
+        "react-hooks/rules-of-hooks": "error",
         "no-console": 0,
         "comma-dangle": [2, "always-multiline"],
         "no-unused-vars": "error",

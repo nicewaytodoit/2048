@@ -48,7 +48,7 @@ const ChooserControl: React.SFC<iSelectControl> = (props) => {
                 <div>
                     <div className="left" onClick={moveLeft} onKeyPress={moveLeft} role="button" tabIndex={-1} />
                 </div>
-                <div className="TRansparent" />
+                <div className="window" />
                 <div>
                     <div className="right" onClick={moveRight} onKeyPress={moveRight} role="button" tabIndex={-1} />
                 </div>

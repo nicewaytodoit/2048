@@ -68,7 +68,6 @@
   50% {
     left: -300px;
   }
-  5
   100% {
     left: 200px;
   }
@@ -79,13 +78,16 @@
   width: 100%;
   height: 500px;
   background-color: #666; 
+  position: relative;
 }
 .Chooser .ChooserWindow {
-  width: 300ps;
+  position: absolute;
+  width: 100%;
   height: 500px;
   display: flex;
   align-items: stretch;
   height: 100%;
+  z-index: 20;
 }
 .ChooserWindow div:nth-child(2) {
   flex-grow: 1;
@@ -107,10 +109,20 @@
   border: 1px solid black;
 }
 
+.Chooser .Content .item div {
+  border: 1px solid black;
+}
+.Chooser .Content .item {
+  height: 150px;
+  width: 300px;
+  background-color: lightseagreen;
+  float: left;
+}
 .Chooser .Content {
-  display: relative;
+  position: absolute;
   background-color: aliceblue;
   width: 100%;
   height: 200px;
-  z-index: -2;
+  z-index: 1;
+  top: 0px;
 }

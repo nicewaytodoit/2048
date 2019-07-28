@@ -1,6 +1,6 @@
 import * as React from 'react';
 import './App.css';
-import logo from '../assets/logo.svg';
+import logo from '../assets/ninja.svg';
 
 const AppHeader = () => {
     return (

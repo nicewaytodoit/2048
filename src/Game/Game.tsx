@@ -298,7 +298,10 @@ class Game extends React.Component<myProps, myState> {
                 top: `${normalisedTile.y * tileAndSpaceSize}px`,
                 fontSize: `${((55 * 4) / size)}px`,
             };
-            return styles;
+            return {
+                styles,
+                tileSize,
+            };
         };
         
         let tileContainer: Array<React.ReactNode | React.ReactChild | React.ReactElement> = [];
@@ -314,7 +317,7 @@ class Game extends React.Component<myProps, myState> {
             else {
                 classes.push("tile-new");
             }
-    
+            const tileStyles = getStyle(tile, GridSize);
             tileContainer = [
                 ...tileContainer,
                 <div
@@ -322,9 +325,28 @@ class Game extends React.Component<myProps, myState> {
                     className={[
                         ...classes,
                     ].join(' ')}
-                    style={getStyle(tile, GridSize)}
+                    style={tileStyles.styles}
                 >
-                    {tile.value}
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width={`${tileStyles.tileSize}px`}
+                        height={`${tileStyles.tileSize}px`}
+                        viewBox="0 0 100 100"
+                        preserveAspectRatio="xMinYMin"
+                    >
+                        <text
+                            xmlns="http://www.w3.org/2000/svg"
+                            x="50"
+                            y="50" 
+                            textAnchor="middle"
+                            alignmentBaseline="central"
+                            fontSize="2em"
+                            fontFamily="Arial"
+                            fontWeight="bold"
+                        >
+                            {tile.value}
+                        </text>
+                    </svg>
                 </div>,
             ];
         };

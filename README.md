@@ -1,6 +1,50 @@
 
 
+# v0.4.1 
+> 2019-07-28
++ TODO List
+  - First page 
+    - SVG assets
+      - gear
+      - question mark
+      - winning cup
+      - arrow (instead of styles)
+      - game contoler 
+    - Screen shots of each grid size (3,4,5,6x6 ...)
+    - names for table sizes
+    - assemble everything
+
+  - Help screen (modal) 
+    - Slider control with dots ()
+    - Create slides     
+  - Settings screen (modal)
+
+
+  - Memoisation (tiles, font sizes, numbers abbreviation (K,M,G)...)
+  - Tile zoom to see number score etc.
+  - Undo functionality - simple with state preservation
+
+
+
 # v0.4 - New Feature List
+
+## Problem with text size 
+  - it is basicly not solvable by CSS or SVG have same issue, it is possible to enter and resize static text
+    as soon new text it enter it does not resize, Excel cell behaviour is needed.
+
+## Test in K, M, P ... enlarge each on tile click 300k, 900m, 999b
+  - https://en.wikipedia.org/wiki/Names_of_large_numbers  
+
+## Calculae final tile ratio in comparison to table field 
+
+
+## List of choices is:
+  - Small 
+  - Classic 
+  - Big
+  - Bigger 
+  - Huge 8x8
+
 
 ## Error List 
 - Line 1:  Definition for rule 'no-object-literal-type-assertion' was not found  no-object-literal-type-assertio

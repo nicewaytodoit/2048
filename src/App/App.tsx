@@ -49,30 +49,21 @@ const ChooserControl: React.SFC<iSelectControl> = (props) => {
         setDirection(-1);
         setIndex(rollLeft(sizesLength, index));
     };
-    const innerPiece = (item) => {
-        console.log('><<<<<', item);
+    const innerPiece = (item, direction = 0) => {
+        const scrollClass = (direction === -1) ? 'right' : (direction === 1) ? 'left' : 'middle';
         return (
-            <div className="item" key={`k-${item.value}-${item.value}`}>
+            <div className={['item', scrollClass].join(' ')} key={`k-${item.value}-${item.value}`}>
                 <div>PIXTURE XXX</div>
                 <div>{item.text} - {item.value} x {item.value}</div>
             </div>
         );
     };
     const scrollChoosenItems = (direction: number, index: number) => {
-        const item = sizes[index];
-        if (direction === 0) return innerPiece(item);
-        if (direction === -1) {
-            return [
-                innerPiece(item),
-                innerPiece(sizes[rollRight(sizesLength, index)]),
-            ];
-        } 
-        if (direction === 1) {
-            return [
-                innerPiece(sizes[rollLeft(sizesLength, index)]),
-                innerPiece(item),
-            ];
-        }
+        return [
+            innerPiece(sizes[rollLeft(sizesLength, index)], -1),
+            innerPiece(sizes[index], 0),
+            innerPiece(sizes[rollRight(sizesLength, index)], 1),
+        ];
     };
 
     return (
@@ -81,12 +72,16 @@ const ChooserControl: React.SFC<iSelectControl> = (props) => {
                 {scrollChoosenItems(direction, index)}                
             </div>
             <div className="ChooserWindow">
-                <div>
-                    <div className="left" onClick={moveLeft} onKeyPress={moveLeft} role="button" tabIndex={-1} />
+                <div className="container-left">
+                    <div className="trainagle-container">
+                        <div className="triangleLeft" onClick={moveLeft} onKeyPress={moveLeft} role="button" tabIndex={-1} />
+                    </div>
                 </div>
                 <div className="window" />
-                <div>
-                    <div className="right" onClick={moveRight} onKeyPress={moveRight} role="button" tabIndex={-1} />
+                <div className="container-right">
+                    <div className="trainagle-container">
+                        <div className="triangleRight" onClick={moveRight} onKeyPress={moveRight} role="button" tabIndex={-1} />
+                    </div>
                 </div>
             </div>
             <div onClick={props.HandleChange} onKeyPress={props.HandleChange} role="button" tabIndex={0}>Choose</div>

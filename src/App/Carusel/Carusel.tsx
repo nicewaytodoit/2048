@@ -2,6 +2,8 @@
 import * as React from 'react';
 import './Carusel.scss';
 import * as chooserImages from '../../assets/chooser';
+import * as assets from '../../assets';
+import SvgButton from '../SvgButton';
 
 interface GameType { text: string, value: number, url: string }
 
@@ -17,8 +19,8 @@ const Carusel: React.SFC<iCarusel> = (props) => {
         setRotation((rotation + (direction * slice))); // % 360
         props.HandleChange({ target: { value: ((rotation + (direction * slice)) / slice) }});
     };
-    const rotateNext = () => rotate(-1);
-    const rotatePrev = () => rotate(1);
+    const rotateNext = () => rotate(1);
+    const rotatePrev = () => rotate(-1);
 
     const barerelStyle = {
         "-webkit-transform": "rotateY(" + rotation + "deg)",
@@ -39,7 +41,11 @@ const Carusel: React.SFC<iCarusel> = (props) => {
                                 <div>
                                     <img style={{height:"200px"}} src={chooserImages[item.url]} alt={`Grid ${item.value} x ${item.value}`} />
                                 </div>
-                                <div>{item.text} <br /> {item.value} x {item.value}</div>
+                                <div className="text">
+                                    {item.text}
+                                    <br />
+                                    {item.value} x {item.value}
+                                </div>
                             </div>
                         );
                     })}
@@ -47,11 +53,11 @@ const Carusel: React.SFC<iCarusel> = (props) => {
             </div>
             <nav>
                 <div>
-                    <div className="next" onClick={rotateNext} onKeyDown={rotateNext} role="button" tabIndex={0}>Next</div>
+                    <SvgButton onClick={rotateNext} url={assets.triangleround} text="Next" />
                 </div>
                 <div />
                 <div>
-                    <div className="prev" onClick={rotatePrev} onKeyDown={rotateNext} role="button" tabIndex={-1}>Prev</div>
+                    <SvgButton onClick={rotatePrev} url={assets.triangleround} text="Previous" />
                 </div>
             </nav>
         </div>

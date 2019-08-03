@@ -128,6 +128,25 @@ html, body {
   height: 40px;
 }
 
+.StartScreen .controls {
+  position: relative;
+  top: 0px;
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  z-index: 3;
+}
+
+.StartScreen .controls > div {
+    flex-grow: 1;
+    background-color: #faf8ef;
+}
+.StartScreen .controls > div:nth-child(2) {
+    flex-grow: 0;
+    min-width: 280px;
+    background-color: transparent;
+}
+
 /* F29F77 */
 
 .Chooser {

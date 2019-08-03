@@ -2,17 +2,19 @@
 import * as React from 'react';
 import './App.css';
 import Game from '../Game/Game';
+import * as chooserImages from '../assets/chooser';
 
+const getAssetName = (val) => `img${val}x${val}`;
 const sizes = [
-    { text: 'Small', value: 3 },
-    { text: 'Normal', value: 4 },
-    { text: 'Big', value: 5 },
-    { text: 'Bigger', value: 6 },
-    { text: 'Very Big', value: 7 },
-    { text: 'Large', value: 8 },
-    { text: 'Larger', value: 9 },
-    { text: 'Very Large', value: 10 },
-    { text: 'Why man, why?!', value: 11 },
+    { text: 'Small', value: 3, url: getAssetName(3) },
+    { text: 'Normal', value: 4, url: getAssetName(4) },
+    { text: 'Big', value: 5, url: getAssetName(5) },
+    { text: 'Bigger', value: 6, url: getAssetName(6) },
+    { text: 'Very Big', value: 7, url: getAssetName(7) },
+    { text: 'Large', value: 8, url: getAssetName(8) },
+    { text: 'Larger', value: 9, url: getAssetName(9) },
+    { text: 'Very Large', value: 10, url: getAssetName(10) },
+    { text: 'Why man, why?!', value: 11, url: getAssetName(11) },
 ];
 const sizesLength = sizes.length - 1;
 
@@ -53,7 +55,9 @@ const ChooserControl: React.SFC<iSelectControl> = (props) => {
         const scrollClass = (direction === -1) ? 'right' : (direction === 1) ? 'left' : 'middle';
         return (
             <div className={['item', scrollClass].join(' ')} key={`k-${item.value}-${item.value}`}>
-                <div>PIXTURE XXX</div>
+                <div style={{height:"200px"}}>
+                    <img style={{height:"100%"}} src={chooserImages[item.url]} alt={`Grid ${item.value} x ${item.value}`} />
+                </div>
                 <div>{item.text} - {item.value} x {item.value}</div>
             </div>
         );

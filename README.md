@@ -4,15 +4,26 @@
 > 2019-07-28
 + TODO List
   - First page 
-    - SVG assets
-      - gear
-      - question mark
-      - winning cup
-      - arrow (instead of styles)
-      - game contoler 
-    - Screen shots of each grid size (3,4,5,6x6 ...)
-    - names for table sizes
+    + SVG assets
+      + gear
+      + question mark
+      + winning cup
+      + arrow (instead of styles)
+      + game contoler 
+    
+    > Screen shots of each grid size (3,4,5,6x6 ...)
     - assemble everything
+    
+    + names for table sizes
+      + 03x03 Small
+      + 04x04 Classic
+      + 05x05 Big
+      + 06x06 Bigger 
+      + 07x07 Larger
+      + 08x08 Huge
+      + 09x09 Huger
+      + 10x10 Humongous
+      + 11x11 Why man? Why?!
 
   - Help screen (modal) 
     - Slider control with dots ()
@@ -72,16 +83,16 @@
     - Android and React Native conversion ... deploying to Web/hosting and have it as part of company / portfolio
     - Need for speed, making it in Svelte
      
-
-
+- https://keycode.info/ -> 32 is spacebar -> RESET -> HammerJS 
 
 # Bug list 
-## 2019-06-30 10:00
+
+> 2019-06-30 10:00
 + setup tiles not working
 + Last End screen does not work. Win/Over with button Try Again 
 
-## 2019-06-30 06:00
-=TODO===
+> 2019-06-30 06:00
+## TODO===
 + Reset button probably does not work
   + KeyBoard fixed and button fixed 
   + not connected with emit
@@ -94,10 +105,9 @@
   + in order to make it work I would need to, hande each Tile not rerender all
   + styles are hard coded so if I would to increase size of the table this will not work
 
-- https://keycode.info/ -> 32 is spacebar -> RESET -> HammerJS 
 
 
-### Fixing Transition for Custom size Grid:
+## Fixing Transition for Custom size Grid:
 + creating fixed tiles
 + creating step circular movement
   + tile must have fixed keyID
@@ -122,7 +132,7 @@
   + choosing your own size of table 
 
 
-# Lessons Learn
+# Lessons Learnt
 This project was created to play with conversion of the game 2048, and also to reverse engener thing into react, additionally playing with new tools like ```Yarn PNP```
 
 ## yarn -pnp

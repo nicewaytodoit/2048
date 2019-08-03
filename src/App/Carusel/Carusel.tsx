@@ -16,16 +16,22 @@ const Carusel: React.SFC<iCarusel> = (props) => {
     const [rotation, setRotation] = React.useState<number>(0);
     const slice = 360 / props.GameTypes.length;
     const rotate = (direction) => { 
-        setRotation((rotation + (direction * slice))); // % 360
-        props.HandleChange({ target: { value: ((rotation + (direction * slice)) / slice) }});
+        const totalRotation = rotation + (direction * slice);
+        setRotation(totalRotation);
+        // const rollLeft = (size, i) => (size + i) % size;
+        const rollRight = (size, i) => i % size;
+        const indexRaw = direction > 0 ? ((360 - (totalRotation % 360)) % 360) / slice : Math.abs(totalRotation / slice);
+        const index = rollRight(props.GameTypes.length, indexRaw);
+        const position = props.GameTypes[index].value;
+        props.HandleChange(position);
     };
     const rotateNext = () => rotate(1);
     const rotatePrev = () => rotate(-1);
 
     const barerelStyle = {
-        "-webkit-transform": "rotateY(" + rotation + "deg)",
-        "-moz-transform": "rotateY(" + rotation + "deg)",
-        "-o-transform": "rotateY(" + rotation + "deg)",
+        "WebkitTransform": "rotateY(" + rotation + "deg)",
+        "MozTransform": "rotateY(" + rotation + "deg)",
+        "OTransform": "rotateY(" + rotation + "deg)",
         "transform": "rotateY(" + rotation + "deg)",
     };
 
@@ -35,7 +41,6 @@ const Carusel: React.SFC<iCarusel> = (props) => {
                 <div className="barrel" style={barerelStyle}>
                     {props.GameTypes.map((item, index) => {
                         const itemStyle = { transform: `rotateY(${(index * slice).toString()}deg)` };
-                        console.log(itemStyle);
                         return (
                             <div key={`k-${item.value}-${item.value}`} className="item" style={itemStyle}>
                                 <div>

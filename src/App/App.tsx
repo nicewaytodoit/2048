@@ -37,8 +37,7 @@ class App extends React.Component<MyProps, MyState> {
         GridSize: 3,
         GameState: false,
     };
-    ValueChange = (e) => {
-        const val = e.target.value;
+    ValueChange = (val) => {
         this.setState(() => ({ GridSize: Number.parseInt(val) }));
     }
 

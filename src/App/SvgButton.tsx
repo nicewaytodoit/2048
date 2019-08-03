@@ -9,7 +9,7 @@ interface iSvgButton {
 const SvgButton: React.SFC<iSvgButton> = (props) => {
     const { url, text, onClick } = props;
     const btnStyles = {
-        "-webkit-mask": `url(${url}) no-repeat center`,
+        "WebkitMask": `url(${url}) no-repeat center`,
         mask: `url(${url}) no-repeat center`,
     };
     return (

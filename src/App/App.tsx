@@ -4,18 +4,26 @@ import './App.css';
 import Game from '../Game/Game';
 import * as chooserImages from '../assets/chooser';
 
-const getAssetName = (val) => `img${val}x${val}`;
 const sizes = [
-    { text: 'Small', value: 3, url: getAssetName(3) },
-    { text: 'Normal', value: 4, url: getAssetName(4) },
-    { text: 'Big', value: 5, url: getAssetName(5) },
-    { text: 'Bigger', value: 6, url: getAssetName(6) },
-    { text: 'Very Big', value: 7, url: getAssetName(7) },
-    { text: 'Large', value: 8, url: getAssetName(8) },
-    { text: 'Larger', value: 9, url: getAssetName(9) },
-    { text: 'Very Large', value: 10, url: getAssetName(10) },
-    { text: 'Why man, why?!', value: 11, url: getAssetName(11) },
-];
+    'Small',
+    'Normal',
+    'Big',
+    'Bigger',
+    'Very Big',
+    'Large',
+    'Larger',
+    'Very Large',
+    'Why man, why?!',
+].map((text, index) => {
+    const value = 3 + index; 
+    return {
+        text,
+        value,
+        url: `img${value}x${value}`,
+    };
+});
+
+
 const sizesLength = sizes.length - 1;
 
 interface iSelectControl {

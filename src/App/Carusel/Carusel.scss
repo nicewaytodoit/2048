@@ -1,0 +1,104 @@
+// Carousel configuration parameters
+$n: 9;
+$item-width: 300px;
+$item-separation: 0px;
+$viewer-distance: 500px;
+
+// Derived variables
+$theta: 40;// 2 * 3.141592653589793 / $n; 
+$apothem: 412.122px;
+//   r = 412.122 cm
+// R = 438.571 cm
+
+.Carusel {
+  margin: 0;
+  font-family: 'Arial';
+  font-size: 1.5em;
+  color: black;
+
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  justify-content: center;
+
+  .container {
+    padding: 2px;
+  
+    perspective: $viewer-distance;
+    overflow: hidden;
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    > * {
+      flex: 0 0 auto;
+    }
+    
+    .barrel {
+      margin: 0;
+      
+      width: $item-width - 0;
+      transform-style: preserve-3d;
+      transition: transform 0.5s;
+      transform-origin: 50% 50% (-$apothem);
+      
+      > div {
+        width: 100%;
+        background-color: #faf8ef;
+        box-sizing: border-box;
+        padding: 0 $item-separation / 2;
+        opacity: 1;
+        
+        &:not(:first-of-type) {
+          position: absolute;
+          left: 0;
+          top: 0;
+          transform-origin: 50% 50% (-$apothem);
+        }
+        
+        @for $i from 2 through $n {
+          &:nth-child(#{$i}) {
+            transform: rotateY(#{($i - 1) * $theta}deg);
+          }
+        }
+      }
+    }
+  }
+  nav { 
+    position: relative;
+    top: 0px;
+    display: flex;
+    align-items: stretch;
+    width: 100%;
+    z-index: 3;
+    // height: 400px;
+    > div {
+      flex-grow: 1;
+      background-color: blue;
+    }
+    > div:nth-child(2) {
+      flex-grow: 0;
+      min-width: 280px;
+      background-color: transparent;
+    }
+    .next, .prev {
+      color: #444;
+      padding: 1em 2em;
+      cursor: pointer;
+      background: #CCC;
+      border-radius: 5px;
+      border-top: 1px solid #FFF;
+      box-shadow: 0 0px 0 #999;
+      transition: box-shadow 0.1s, top 0.1s;
+      
+    }
+    .next:hover, .prev:hover { color: #000; }
+    .next:active, .prev:active {
+      top: 104px;
+      box-shadow: 0 1px 0 #999;
+    }
+    .next { right: 5em; }
+    .prev { left: 5em; }
+  }
+}
+  

@@ -1,10 +1,12 @@
-/* eslint-disable react/destructuring-assignment */
+/* eslint-disable react/destructuring-assignment, no-unused-vars */
 import * as React from 'react';
 import './App.css';
 import Game from '../Game/Game';
 import * as chooserImages from '../assets/chooser';
+import Carusel from './Carusel/Carusel';
+import * as assets from '../assets';
 
-const sizes = [
+const gameTypes = [
     'Small',
     'Normal',
     'Big',
@@ -24,7 +26,7 @@ const sizes = [
 });
 
 
-const sizesLength = sizes.length - 1;
+const gameTypesLength = gameTypes.length - 1;
 
 interface iSelectControl {
     GridSize: number;
@@ -34,7 +36,7 @@ interface iSelectControl {
 const SelectControl: React.SFC<iSelectControl> = (props) => (
     <select onChange={props.HandleChange}>
         <option key="k-0" value={0}>Please Select</option>
-        {sizes.map((item) => {
+        {gameTypes.map((item) => {
             const optionProps = {
                 value: item.value,
                 ...(item.value === props.GridSize && { selected: true }),
@@ -43,21 +45,21 @@ const SelectControl: React.SFC<iSelectControl> = (props) => (
         })}
     </select>
 );
-
+// 
 const ChooserControl: React.SFC<iSelectControl> = (props) => {
     const [index, setIndex] = React.useState<number>(0);
     const [direction, setDirection] = React.useState<number>(0);
     const rollLeft = (size, i) => (size + (i-1)) % size;
     const rollRight = (size, i) => (i+1) % size;
     const moveRight = () => {
-        console.log('----(+)--', index, rollRight(sizesLength, index), sizesLength);
+        console.log('----(+)--', index, rollRight(gameTypesLength, index), gameTypesLength);
         setDirection(+1);
-        setIndex(rollRight(sizesLength, index));
+        setIndex(rollRight(gameTypesLength, index));
     };
     const moveLeft = () => {
-        console.log('----(-)--', index, rollLeft(sizesLength, index), sizesLength);
+        console.log('----(-)--', index, rollLeft(gameTypesLength, index), gameTypesLength);
         setDirection(-1);
-        setIndex(rollLeft(sizesLength, index));
+        setIndex(rollLeft(gameTypesLength, index));
     };
     const innerPiece = (item, direction = 0) => {
         const scrollClass = (direction === -1) ? 'right' : (direction === 1) ? 'left' : 'middle';
@@ -72,9 +74,9 @@ const ChooserControl: React.SFC<iSelectControl> = (props) => {
     };
     const scrollChoosenItems = (direction: number, index: number) => {
         return [
-            innerPiece(sizes[rollLeft(sizesLength, index)], -1),
-            innerPiece(sizes[index], 0),
-            innerPiece(sizes[rollRight(sizesLength, index)], 1),
+            innerPiece(gameTypes[rollLeft(gameTypesLength, index)], -1),
+            innerPiece(gameTypes[index], 0),
+            innerPiece(gameTypes[rollRight(gameTypesLength, index)], 1),
         ];
     };
 
@@ -109,7 +111,7 @@ type MyState = {
 
 class App extends React.Component<MyProps, MyState> {
     state = {
-        GridSize: 0,
+        GridSize: 3,
         GameState: false,
     };
     ValueChange = (e) => {
@@ -124,18 +126,55 @@ class App extends React.Component<MyProps, MyState> {
         });
     }
 
+    Alert = () => {
+        alert("Button Pressed");
+    }
+    Button = (props) => {
+        const btnStyles = {
+            "-webkit-mask": `url(${props.url}) no-repeat center`,
+            mask: `url(${props.url}) no-repeat center`,
+        };
+        return (
+            <div
+                style={btnStyles}
+                role="button"
+                onClick={props.onClick}
+                onKeyDown={props.onClick}
+                tabIndex={0}
+                title={props.text}
+            />
+        );
+    };
+
     render() {
         const { GridSize, GameState } = this.state;
         return (
             <div className="App">
                 {!GameState && (
                     <div className="StartScreen">
-                        <span> ( ? ) </span>
-                        <span> Settings </span>
+                        <div className="settings">
+                            <this.Button onClick={this.Alert} url={assets.help} text="Help" />
+                            <this.Button onClick={this.Alert} url={assets.cog} text="Settings" />
+                        </div>
+                        {/*
                         <SelectControl GridSize={GridSize} HandleChange={this.ValueChange} />
                         <ChooserControl GridSize={GridSize} HandleChange={this.ValueChange} />
-                        <button type="button" onClick={this.StartGame}>Start Game</button>
-                        <button type="button">Leaderboard</button>
+                        */}
+                        <Carusel GameTypes={gameTypes} HandleChange={this.ValueChange} />
+                        <div className={}>
+                            <div>
+                                <button type="button" onClick={this.StartGame}>
+                                    <this.Button url={assets.game} text="Start Game" />
+                                    <span>Start Game</span>
+                                </button>
+                            </div>
+                            <div />
+                            <div>
+                                <button type="button">
+                                    <this.Button url={assets.trophy} text="Leaderboard" />
+                                    <span>Leaderboard</span>
+                                </button>
+                            </div>
                     </div>
                 )}
                 {GameState && <Game GridSize={GridSize} />}

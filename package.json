@@ -1,6 +1,6 @@
 {
   "name": "r1024",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "author": "Aleksandar Ristevski",
   "description": "Just for fun converting game 2048 to React and evolving it just a bit",
   "private": true,

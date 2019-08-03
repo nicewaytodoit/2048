@@ -1,5 +1,17 @@
+
+html, body {
+  margin: 0;
+  padding: 0;
+
+  background: #faf8ef;
+  color: #776E65;
+  font-family: "Clear Sans", "Helvetica Neue", Arial, sans-serif;
+  font-size: 18px;
+}
+
 .App {
   text-align: center;
+  margin: 20px;
 }
 
 .App-logo {
@@ -73,6 +85,50 @@
   }
 }
 
+.App .StartScreen {
+  margin: 0px;
+  padding: 0px;
+}
+
+.App .StartScreen .settings {
+  height: 50px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.App .StartScreen .settings div {
+  margin-left: 20px;
+  background-color: #bbada0;
+  width: 40px;
+  height: 40px;
+}
+.App .StartScreen button:last-child {
+  background-color: #bbada0;
+}
+.App .StartScreen button > * {
+  align-self: center;
+}
+.App .StartScreen button {
+  font-family: "Clear Sans", "Helvetica Neue", Arial, sans-serif;
+  font-size: 35px;
+  color: #fbf8ef;
+  margin: 10px;
+  width: 320px;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  background-color: #F29F77;
+  border: 0;
+  border-radius: 7px;
+}
+.App .StartScreen button div {
+  margin-right: 10px;
+  background-color: #fbf8ef;
+  width: 40px;
+  height: 40px;
+}
+
+/* F29F77 */
 
 .Chooser {
   width: 100%;

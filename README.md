@@ -1,6 +1,12 @@
 
 
 # v0.4.1 
+> 2019-08-03
+  + strange issue with React if in style there is extra space between let say number and px messure, it will send styles as props instead applying as styles.
+  + Building Carusel control
+
+
+
 > 2019-07-28
 + TODO List
   - First page 

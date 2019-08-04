@@ -4,6 +4,23 @@
   "author": "Aleksandar Ristevski",
   "description": "Just for fun converting game 2048 to React and evolving it just a bit",
   "private": true,
+  "scripts": {
+    "start": "node scripts/start.js",
+    "build": "node scripts/build.js",
+    "test": "node scripts/test.js"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
   "dependencies": {
     "@babel/core": "^7.5.5",
     "@babel/preset-react": "^7.0.0",
@@ -53,7 +70,7 @@
     "react": "^16.8.6",
     "react-app-polyfill": "^1.0.1",
     "react-dev-utils": "^9.0.1",
-    "react-dom": "^16.8.6",
+    "react-dom": "npm:@hot-loader/react-dom",
     "resolve": "1.11.1",
     "sass-loader": "7.1.0",
     "semver": "6.2.0",
@@ -64,24 +81,8 @@
     "webpack": "4.35.3",
     "webpack-dev-server": "3.7.2",
     "webpack-manifest-plugin": "2.0.4",
-    "workbox-webpack-plugin": "4.3.1"
-  },
-  "scripts": {
-    "start": "node scripts/start.js",
-    "build": "node scripts/build.js",
-    "test": "node scripts/test.js"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "workbox-webpack-plugin": "4.3.1",
+    "react-hot-loader": "^4.12.10"
   },
   "devDependencies": {
     "@types/jest": "^24.0.15",

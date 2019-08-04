@@ -1,10 +1,12 @@
-/* eslint-disable react/destructuring-assignment, no-unused-vars */
+/* eslint-disable react/destructuring-assignment, no-unused-vars, import/order */
+import 'react-hot-loader';
 import * as React from 'react';
 import './App.css';
 import Game from '../Game/Game';
 import Carusel from './Carusel/Carusel';
 import * as assets from '../assets';
 import SvgButton from './SvgButton';
+import { hot } from 'react-hot-loader/root';
 
 const gameTypes = [
     'Small',
@@ -25,7 +27,6 @@ const gameTypes = [
     };
 });
 
-// const gameTypesLength = gameTypes.length - 1;
 type MyProps = {};
 type MyState = {
     GridSize: number,
@@ -49,7 +50,7 @@ class App extends React.Component<MyProps, MyState> {
     }
 
     Alert = () => {
-        alert("Button Pressed");
+        alert("Button Pressed test Again");
     }
 
     render() {
@@ -85,4 +86,5 @@ class App extends React.Component<MyProps, MyState> {
     }
 }
 
-export default App;
+// export default App;
+export default hot(App);

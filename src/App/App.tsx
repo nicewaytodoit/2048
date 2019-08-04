@@ -7,6 +7,7 @@ import Carusel from './Carusel/Carusel';
 import * as assets from '../assets';
 import SvgButton from './SvgButton';
 import { hot } from 'react-hot-loader/root';
+import Help from '../components/Help/Help';
 
 const gameTypes = [
     'Small',
@@ -31,12 +32,14 @@ type MyProps = {};
 type MyState = {
     GridSize: number,
     GameState: Boolean,
+    ShowHelp: Boolean,
 };
 
 class App extends React.Component<MyProps, MyState> {
     state = {
         GridSize: 3,
         GameState: false,
+        ShowHelp: false,
     };
     ValueChange = (val) => {
         this.setState(() => ({ GridSize: Number.parseInt(val) }));
@@ -53,14 +56,17 @@ class App extends React.Component<MyProps, MyState> {
         alert("Button Pressed test Again");
     }
 
+    showHelp = () => this.setState({ ShowHelp: true });
+    hideHelp = () => this.setState({ ShowHelp: false });
+
     render() {
-        const { GridSize, GameState } = this.state;
+        const { GridSize, GameState, ShowHelp } = this.state;
         return (
             <div className="App">
                 {!GameState && (
                     <div className="StartScreen">
                         <div className="settings">
-                            <SvgButton onClick={this.Alert} url={assets.help} text="Help" />
+                            <SvgButton onClick={this.showHelp} url={assets.help} text="Help" />
                             <SvgButton onClick={this.Alert} url={assets.cog} text="Settings" />
                         </div>
                         <Carusel GameTypes={gameTypes} HandleChange={this.ValueChange} />
@@ -81,6 +87,7 @@ class App extends React.Component<MyProps, MyState> {
                     </div>
                 )}
                 {GameState && <Game GridSize={GridSize} />}
+                <Help title="How To Play" show={ShowHelp} onClose={this.hideHelp} />
             </div>
         );
     }

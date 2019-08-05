@@ -3,7 +3,7 @@
 # v0.4.2
 > 2019-08-04
   + React HotRealoading
-  - Help pages - with React Bootstrap carusel -? how to style into circles?
+  + Help pages - with React Bootstrap carusel -? how to style into circles?
   - Settings 
   - Nicer CSS -> SCSS ->
 

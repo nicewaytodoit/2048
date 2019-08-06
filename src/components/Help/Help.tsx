@@ -8,7 +8,22 @@ import './Help.scss';
 interface iHelp { title: string; show: boolean; onClose: () => void; }
 
 const Help: React.SFC<iHelp> = (props) => {
+    const [carouselIndex, setCarouselIndex] = React.useState<number>(0);
+    const [animationOn, setAnimationOn] = React.useState<boolean>(false);
+    const noOfCarouselItems = 6;
     const { title, show, onClose } = props;
+    const keyB = true;
+    const move = (goToIndex) => {
+        if (!animationOn) {
+            if (goToIndex!==carouselIndex) {
+                setAnimationOn(true);
+                setCarouselIndex(goToIndex);
+            }
+        } 
+    };
+    const moveRight = () => move((carouselIndex < noOfCarouselItems - 1 ? carouselIndex + 1: carouselIndex));
+    const moveLeft = () => move((carouselIndex > 0 ? carouselIndex - 1: carouselIndex));
+    const turnOffAnimation = () => setAnimationOn(false);
     return (
         <Modal
             show={show}
@@ -20,36 +35,69 @@ const Help: React.SFC<iHelp> = (props) => {
                 <Modal.Header>
                     <Modal.Title>{title}</Modal.Title>
                 </Modal.Header>
-                <Carousel keyboard controls={false} interval={null}>
+                <Carousel activeIndex={carouselIndex} keyboard={keyB} controls={false} interval={null} onSlideEnd={turnOffAnimation}>
                     <Carousel.Item>
                         <div className="slide-header">
-                            <p>just a test</p>
+                            <p>There are some numbers on the board.</p>
                         </div>
                         <img
                             className="d-block w-100"
-                            src={testImgs.img5x5}
+                            src={testImgs.img4x4}
                             alt="First slide"
                         />
                         <div className="spacer" />
                     </Carousel.Item>
                     <Carousel.Item>
                         <div className="slide-header 2">
-                            <p>just a test</p>
+                            <p>Swipe any direction (Up, Down, Left, Right) to move all tiles.</p>
                         </div>
                         <img
                             className="d-block w-100"
-                            src={testImgs.img8x8}
+                            src={testImgs.img4x4}
                             alt="Third slide"
                         />
                         <div className="spacer" />
                     </Carousel.Item>
                     <Carousel.Item>
                         <div className="slide-header">
-                            <p>just a test 3</p>
+                            <p>A new tile of 2 or 4 will appear on the board after each move.</p>
                         </div>
                         <img
                             className="d-block w-100"
-                            src={testImgs.img11x11}
+                            src={testImgs.img4x4}
+                            alt="Third slide"
+                        />
+                        <div className="spacer" />
+                    </Carousel.Item>
+                    <Carousel.Item>
+                        <div className="slide-header">
+                            <p>When two tiles with the same number touch, they merge into one!</p>
+                        </div>
+                        <img
+                            className="d-block w-100"
+                            src={testImgs.img4x4}
+                            alt="Third slide"
+                        />
+                        <div className="spacer" />
+                    </Carousel.Item>
+                    <Carousel.Item>
+                        <div className="slide-header">
+                            <p>When the board is filled up, you lose.</p>
+                        </div>
+                        <img
+                            className="d-block w-100"
+                            src={testImgs.img4x4}
+                            alt="Third slide"
+                        />
+                        <div className="spacer" />
+                    </Carousel.Item>
+                    <Carousel.Item>
+                        <div className="slide-header">
+                            <p>When a 2048 tile is created, you win!</p>
+                        </div>
+                        <img
+                            className="d-block w-100"
+                            src={testImgs.img4x4}
                             alt="Third slide"
                         />
                         <div className="spacer" />
@@ -58,13 +106,13 @@ const Help: React.SFC<iHelp> = (props) => {
             </Modal.Body>
             <Modal.Footer>
                 <div>
-                    <SvgButton url={assets.trianglecircle} text="left" />
+                    <SvgButton url={assets.trianglecircle} text="left" onClick={moveLeft} />
                 </div>
                 <div>
                     <Button variant="secondary" onClick={onClose}>Close</Button>
                 </div>
                 <div>
-                    <SvgButton url={assets.trianglecircle} text="Right" />
+                    <SvgButton url={assets.trianglecircle} text="Right" onClick={moveRight} />
                 </div>
             </Modal.Footer>
         </Modal>

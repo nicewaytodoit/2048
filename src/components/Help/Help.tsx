@@ -93,7 +93,7 @@ const Help: React.SFC<iHelp> = (props) => {
                     </Carousel.Item>
                     <Carousel.Item>
                         <div className="slide-header">
-                            <p>When a 2048 tile is created, you win!</p>
+                            <p>When a 2048 tile is created, <br />you WIN!</p>
                         </div>
                         <img
                             className="d-block w-100"

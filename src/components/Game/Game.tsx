@@ -1,11 +1,11 @@
 import * as React from 'react';
-import Body from './Body/Body';
-import Header from './Header';
-import { Help, Divider, Credits } from './Info';
-import Hint from './Hint';
-import Tile, { getTileSize } from './Tile';
-import KeyboardInputManager from './hoc/KeyboardInputManager';
-import './main.scss';
+import Body from '../Body/Body';
+import Header from '../Header/Header';
+import { Help, Divider, Credits } from '../Info';
+import Hint from '../Hint/Hint';
+import Tile, { getTileSize } from '../Tile';
+import KeyboardInputManager from '../hoc/KeyboardInputManager';
+import '../main.scss';
 
 const init = (size) => Array(size).fill(null).map(() => Array(size).fill(null));
 type iTile = {

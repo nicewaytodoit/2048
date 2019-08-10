@@ -2,7 +2,7 @@ import * as React from 'react';
 import {Button, Modal, Carousel} from 'react-bootstrap';
 import * as assets from '../../assets';
 import * as testImgs from '../../assets/chooser';
-import SvgButton from '../../App/SvgButton';
+import SvgButton from '../App/SvgButton';
 import './Help.scss';
 
 interface iHelp { title: string; show: boolean; onClose: () => void; }

@@ -4,10 +4,10 @@ import * as React from 'react';
 import './App.css';
 import Game from '../Game/Game';
 import Carusel from './Carusel/Carusel';
-import * as assets from '../assets';
+import * as assets from '../../assets';
 import SvgButton from './SvgButton';
 import { hot } from 'react-hot-loader/root';
-import Help from '../components/Help/Help';
+import Help from '../Help/Help';
 
 const gameTypes = [
     'Small',

@@ -1,8 +1,8 @@
 /* eslint-disable react/destructuring-assignment */
 import * as React from 'react';
 import './Carusel.scss';
-import * as chooserImages from '../../assets/chooser';
-import * as assets from '../../assets';
+import * as chooserImages from '../../../assets/chooser';
+import * as assets from '../../../assets';
 import SvgButton from '../SvgButton';
 
 interface GameType { text: string, value: number, url: string }

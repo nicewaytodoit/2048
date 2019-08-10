@@ -1,6 +1,18 @@
 
 
 # v0.4.2
+
+
+
+> 2019-08-10
+Adding config for eslint plugin:
+    "eslint.validate": [
+        "javascript",
+        "javascriptreact",
+        "typescript",
+        "typescriptreact"
+    ],
+
 > 2019-08-04
   + React HotRealoading
   + Help pages - with React Bootstrap carusel -? how to style into circles?

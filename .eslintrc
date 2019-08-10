@@ -5,19 +5,19 @@
         "eslint:recommended",
         "plugin:react/recommended"
     ],
+    "globals": {
+        "Atomics": "readonly",
+        "SharedArrayBuffer": "readonly",
+      },
     "parserOptions": {
-        "ecmaVersion": 9,
-        "sourceType": "module",
         "ecmaFeatures": {
-            "esversion": 9,
-            "destructuring": true,
-            "generators": true,
-            "superInFunctions": true,
-            "experimentalObjectRestSpread": true,
-            "jsx": true
-        }
+            "jsx": true,
+        },
+        "ecmaVersion": 2018,
+        "sourceType": "module",
     },
     "plugins": [
+        "@typescript-eslint",
         "react",
         "react-hooks"
     ],

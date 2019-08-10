@@ -106,15 +106,20 @@ class Game extends React.Component<myProps, myState> {
     };
 
     addStartTiles = () => {
-        const startTiles = 4;
+        // const startTiles = 3;
         const { GridSize } = this.props;
         const cells = init(GridSize);
-        for (var i = 0; i < startTiles; i++) {
-            const tile = this.addRandomTile(cells, GridSize);
-            if (tile) {
-                cells[tile.x][tile.y] = tile;
-            }
-        }
+        // for (var i = 0; i < startTiles; i++) {
+        //     const tile = this.addRandomTile(cells, GridSize);
+        //     if (tile) {
+        //         cells[tile.x][tile.y] = tile;
+        //     }
+        // }
+        const available = this.availableCells(cells, 4);
+        // console.log('====>', available);
+        cells[1][0] = new Tile(available[4], (4), 3);
+        cells[2][2] = new Tile(available[10], (2), 2);
+        cells[1][3] = new Tile(available[7], (2), 1);
         return cells;
     };
 
@@ -187,7 +192,11 @@ class Game extends React.Component<myProps, myState> {
 
         let movesAvailable = true;
         if (moved) {
-            const tileNew = this.addRandomTile(allcells, GridSize);
+            // const tileNew = this.addRandomTile(allcells, GridSize);
+            const available = this.availableCells(cells, 4);
+            console.log('====>', available);
+            
+            const tileNew = new Tile(available[2], (2), 11);
             if (tileNew)
                 allcells[tileNew.x][tileNew.y] = tileNew;
             movesAvailable = !!this.movesAvailable(allcells, GridSize);
@@ -327,26 +336,7 @@ class Game extends React.Component<myProps, myState> {
                     ].join(' ')}
                     style={tileStyles.styles}
                 >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width={`${tileStyles.tileSize}px`}
-                        height={`${tileStyles.tileSize}px`}
-                        viewBox="0 0 100 100"
-                        preserveAspectRatio="xMinYMin"
-                    >
-                        <text
-                            xmlns="http://www.w3.org/2000/svg"
-                            x="50"
-                            y="50" 
-                            textAnchor="middle"
-                            alignmentBaseline="central"
-                            fontSize="2em"
-                            fontFamily="Arial"
-                            fontWeight="bold"
-                        >
-                            {tile.value}
-                        </text>
-                    </svg>
+                    {tile.value}
                 </div>,
             ];
         };

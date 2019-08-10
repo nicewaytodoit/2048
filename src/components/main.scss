@@ -120,6 +120,9 @@
     }
   }
   
+  *, *::before, *::after {
+    box-sizing: content-box;
+  }
   .score-container, .best-container {
     $height: 25px;
     position: relative;

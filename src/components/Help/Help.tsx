@@ -1,8 +1,7 @@
 import * as React from 'react';
-import {Button, Modal, Carousel} from 'react-bootstrap';
-import * as assets from '../../assets';
+import {Modal, Carousel} from 'react-bootstrap';
 import * as helpImgs from '../../assets/help';
-import SvgButton from '../App/SvgButton';
+import HelpControls from './HelpControls';
 import './Help.scss';
 
 interface iHelp { title: string; show: boolean; onClose: () => void; }
@@ -57,6 +56,8 @@ const Help: React.SFC<iHelp> = (props) => {
     const moveRight = () => move((carouselIndex < noOfCarouselItems - 1 ? carouselIndex + 1: carouselIndex));
     const moveLeft = () => move((carouselIndex > 0 ? carouselIndex - 1: carouselIndex));
     const turnOffAnimation = () => setAnimationOn(false);
+
+
     return (
         <Modal
             show={show}
@@ -85,15 +86,7 @@ const Help: React.SFC<iHelp> = (props) => {
                 </Carousel>
             </Modal.Body>
             <Modal.Footer>
-                <div>
-                    <SvgButton url={assets.trianglecircle} text="left" onClick={moveLeft} />
-                </div>
-                <div>
-                    <Button variant="secondary" onClick={onClose}>Close</Button>
-                </div>
-                <div>
-                    <SvgButton url={assets.trianglecircle} text="Right" onClick={moveRight} />
-                </div>
+                <HelpControls moveLeft={moveLeft} moveRight={moveRight} onClose={onClose} />
             </Modal.Footer>
         </Modal>
     );

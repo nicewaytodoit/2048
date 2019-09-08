@@ -25,17 +25,17 @@ const helpData = [
     },
     {
         text: <p>When two tiles with the same number touch, they merge into one!</p>,
-        image: helpImgs.help_1,
+        image: helpImgs.help_4,
         alt: 'Forth slide',
     },
     {
         text: <p>When the board is filled up, you lose.</p>,
-        image: helpImgs.help_1,
+        image: helpImgs.help_5,
         alt: 'Fifth slide',
     },
     {
         text: <p>When a 2048 tile is created, <br />you WIN!</p>,
-        image: helpImgs.help_1,
+        image: helpImgs.help_6,
         alt: 'Sixth slide',
     },
 ];

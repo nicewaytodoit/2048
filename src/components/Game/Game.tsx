@@ -106,20 +106,15 @@ class Game extends React.Component<myProps, myState> {
     };
 
     addStartTiles = () => {
-        // const startTiles = 3;
+        const startTiles = 4;
         const { GridSize } = this.props;
         const cells = init(GridSize);
-        // for (var i = 0; i < startTiles; i++) {
-        //     const tile = this.addRandomTile(cells, GridSize);
-        //     if (tile) {
-        //         cells[tile.x][tile.y] = tile;
-        //     }
-        // }
-        const available = this.availableCells(cells, 4);
-        // console.log('====>', available);
-        cells[1][0] = new Tile(available[4], (4), 3);
-        cells[2][2] = new Tile(available[10], (2), 2);
-        cells[1][3] = new Tile(available[7], (2), 1);
+        for (var i = 0; i < startTiles; i++) {
+            const tile = this.addRandomTile(cells, GridSize);
+            if (tile) {
+                cells[tile.x][tile.y] = tile;
+            }
+        }
         return cells;
     };
 
@@ -192,11 +187,7 @@ class Game extends React.Component<myProps, myState> {
 
         let movesAvailable = true;
         if (moved) {
-            // const tileNew = this.addRandomTile(allcells, GridSize);
-            const available = this.availableCells(cells, 4);
-            console.log('====>', available);
-            
-            const tileNew = new Tile(available[2], (2), 11);
+            const tileNew = this.addRandomTile(allcells, GridSize);
             if (tileNew)
                 allcells[tileNew.x][tileNew.y] = tileNew;
             movesAvailable = !!this.movesAvailable(allcells, GridSize);

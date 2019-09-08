@@ -2,8 +2,6 @@
 
 # v0.4.2
 
-
-
 > 2019-08-10
 Adding config for eslint plugin:
     "eslint.validate": [
@@ -173,4 +171,17 @@ Until entire entire surounds addopt this althoug it is amazin feature, --pnp is 
     "extends": "react-app"
   }
 
-  
+
+# Tool/plugins/libs used // Development
+- VSCode
+- React
+
+>> Plugins
+- Bracket Pair Colorizer 2
+- Bookmarks
+- ES7 React/Redux/GraphQL/React-Native snippets (but not good for memory)
+- Fira Code (Settings => fonts)
+- Import Cost
+- Prettier (!!!)
+- Night Owl theme
+

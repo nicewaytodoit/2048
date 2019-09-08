@@ -1,4 +1,6 @@
 {
     "eslint.alwaysShowStatus": true,
-    "eslint.packageManager": "yarn"
+    "eslint.packageManager": "yarn",
+    "editor.fontFamily": "'Fira Code'",
+    "editor.fontLigatures": true,
 }

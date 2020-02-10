@@ -1,5 +1,19 @@
 
 
+# v0.4.3 - TODO List of improvements
+- vunrability in Eslint 
+- hover on Help arrows, and click on circles or turn off hover
+- hover on Arrows in main screen
+- Settings section
+  - Game end mode (number or infinite) number should be multiply of max for tile size.
+    - 9 fields => 2,2,4, 8,16,32, 64,128,256 => perfect game max score ?
+  - ""Number or Letter Number short (K,M,G,T,H,J)
+- "" Font adjustment if big number ...cutting out huge text ...
+- Undo functionality - simple with state preservation
+- Memoisation (tiles, font sizes, numbers abbreviation (K,M,G)...)
+- Tile zoom to see number score etc.
+
+
 # v0.4.2
 
 > 2019-08-10
@@ -68,7 +82,7 @@ Adding config for eslint plugin:
 ## Test in K, M, P ... enlarge each on tile click 300k, 900m, 999b
   - https://en.wikipedia.org/wiki/Names_of_large_numbers  
 
-## Calculae final tile ratio in comparison to table field 
+## Calc final tile ratio in comparison to table field 
 
 
 ## List of choices is:

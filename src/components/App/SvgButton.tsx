@@ -17,7 +17,7 @@ const SvgButton: React.SFC<iSvgButton> = (props) => {
             style={btnStyles}
             role="button"
             onClick={onClick}
-            onKeyDown={onClick}
+            onKeyDown={()=>{}}
             tabIndex={0}
             title={text}
         />

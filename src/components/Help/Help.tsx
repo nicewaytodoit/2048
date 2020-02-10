@@ -69,7 +69,7 @@ const Help: React.SFC<iHelp> = (props) => {
                 <Modal.Header>
                     <Modal.Title>{title}</Modal.Title>
                 </Modal.Header>
-                <Carousel activeIndex={carouselIndex} keyboard={keyB} controls={false} interval={null} onSlideEnd={turnOffAnimation}>
+                <Carousel activeIndex={carouselIndex} keyboard={keyB} controls={false} interval={null} onSlideEnd={turnOffAnimation} onSelect={()=>{}}>
                     {helpData.map((help) => (
                         <Carousel.Item key={help.alt.replace(' ','')}>
                             <div className="slide-header">

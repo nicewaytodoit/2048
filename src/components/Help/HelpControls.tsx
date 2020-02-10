@@ -9,9 +9,7 @@ interface Props {
     moveRight: () => void,
     onClose: (e: object) => void,
 }
-interface State {
-
-}
+interface State { }
 
 class HelpControls extends React.Component<Props, State> {
     state = {}

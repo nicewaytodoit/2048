@@ -2,8 +2,8 @@
 import * as React from 'react';
 import './Carusel.scss';
 import * as chooserImages from '../../../assets/chooser';
-import * as assets from '../../../assets';
-import SvgButton from '../SvgButton';
+import CaruselControls from './CaruselControls';
+
 
 interface GameType { text: string, value: number, url: string }
 
@@ -15,7 +15,9 @@ interface iCarusel {
 const Carusel: React.SFC<iCarusel> = (props) => {
     const [rotation, setRotation] = React.useState<number>(0);
     const slice = 360 / props.GameTypes.length;
-    const rotate = (direction) => { 
+    const rotate = (e, direction) => {
+        e.preventDefault();
+        console.log('XXXXX', direction);
         const totalRotation = rotation + (direction * slice);
         setRotation(totalRotation);
         // const rollLeft = (size, i) => (size + i) % size;
@@ -25,8 +27,8 @@ const Carusel: React.SFC<iCarusel> = (props) => {
         const position = props.GameTypes[index].value;
         props.HandleChange(position);
     };
-    const rotateNext = () => rotate(1);
-    const rotatePrev = () => rotate(-1);
+    const rotateNext = (e) => rotate(e,1);
+    const rotatePrev = (e) => rotate(e,-1);
 
     const barerelStyle = {
         "WebkitTransform": "rotateY(" + rotation + "deg)",
@@ -56,15 +58,7 @@ const Carusel: React.SFC<iCarusel> = (props) => {
                     })}
                 </div>
             </div>
-            <nav>
-                <div>
-                    <SvgButton onClick={rotateNext} url={assets.triangleround} text="Next" />
-                </div>
-                <div />
-                <div>
-                    <SvgButton onClick={rotatePrev} url={assets.triangleround} text="Previous" />
-                </div>
-            </nav>
+            <CaruselControls moveLeft={rotateNext} moveRight={rotatePrev} />
         </div>
     );
 };
